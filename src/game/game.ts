@@ -2,8 +2,10 @@ import * as ROT from 'rot-js'
 import { Tile } from './tile'
 import { Entity } from '../ecs/entity'
 
+type Map = Record<string, Tile>
+
 interface Level {
-    map: Record<string, Tile>
+    map: Map
     entities: Entity[]
 }
 
@@ -38,4 +40,4 @@ class Game implements GameInterface {
     }
 }
 
-export default Game
+export { Game, Map }
