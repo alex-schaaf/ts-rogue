@@ -17,13 +17,13 @@ function lightPasses(map: Map, x: number, y: number): boolean {
     return isTransparent(map, x, y)
 }
 
-function getFovMap(map: Map, x: number, y: number) {
+function getFovMap(map: Map, x: number, y: number, radius: number) {
     const fovMap: Record<string, boolean> = {}
     const fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
         lightPasses(map, x, y)
     )
 
-    fov.compute(x, y, 8, (x, y, r, visibility) => {
+    fov.compute(x, y, radius, (x, y, r, visibility) => {
         if (visibility) {
             const coord = XYtoCoords(x, y)
             if (map[coord] === undefined) {

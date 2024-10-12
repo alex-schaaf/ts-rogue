@@ -9,17 +9,24 @@ interface Level {
     entities: Entity[]
 }
 
+interface GameSettings {
+    fovRadius: number
+}
+
 interface GameInterface {
     display: ROT.Display
     level: Level
 
     player: Entity
+
+    settings: GameSettings
 }
 
 class Game implements GameInterface {
     display: ROT.Display
     level: Level
     player: Entity
+    settings: GameSettings
 
     constructor() {
         this.display = new ROT.Display({ width: 60, height: 24, fontSize: 24 })
@@ -35,6 +42,10 @@ class Game implements GameInterface {
         }
 
         this.player = new Entity()
+
+        this.settings = {
+            fovRadius: 6
+        }
 
         console.debug('Game initialized')
     }
