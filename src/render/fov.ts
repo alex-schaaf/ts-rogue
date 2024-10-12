@@ -1,9 +1,5 @@
 import * as ROT from 'rot-js'
-import { Map } from '../game/game'
-
-function XYtoCoords(x: number, y: number) {
-    return `${x},${y}`
-}
+import { Map, XYtoCoords } from '../game/game'
 
 function isTransparent(map: Map, x: number, y: number) {
     const coords = XYtoCoords(x, y)

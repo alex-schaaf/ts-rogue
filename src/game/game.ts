@@ -4,6 +4,10 @@ import { Entity } from '../ecs/entity'
 
 type Map = Record<string, Tile>
 
+function XYtoCoords(x: number, y: number) {
+    return `${x},${y}`
+}
+
 interface Level {
     map: Map
     entities: Entity[]
@@ -51,4 +55,4 @@ class Game implements GameInterface {
     }
 }
 
-export { Game, Map }
+export { Game, Map, XYtoCoords }
