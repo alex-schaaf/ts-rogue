@@ -8,7 +8,7 @@ class Entity {
         this.components[component.constructor.name] = component;
     }
 
-    getComponent<T extends Component>(component: {new(): T}): T {
+    getComponent<T extends Component>(component: {new(...args: any[]): T}): T {
         return this.components[component.name] as T;
     }
 
