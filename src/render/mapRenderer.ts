@@ -5,11 +5,12 @@ import { Tile } from '../game/tile'
 
 export function renderMap(display: ROT.Display, map: Record<string, Tile>, fovMap: Record<string, boolean>) {
     function isVisible(coord: string) {
-        return true
+        // return true
         return coord in fovMap
     }
 
     function isExplored(coord: string) {
+        return true
         return map[coord].isExplored === true
     }
 

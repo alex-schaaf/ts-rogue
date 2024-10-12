@@ -1,35 +1,12 @@
 import { Map, XYtoCoords } from "../../game/game";
+import { MapGenerationAlgorithm } from "../abstract";
+import { CardinalDirection } from "../enums";
+import { getFloor, getWall } from "../tiles";
 
-enum CardinalDirection {
-    North = "North",
-    East = "East",
-    South = "South",
-    West = "West"
-}
 
-function getWall() {
-    return {
-        char: '#',
-        colorFg: '#efefef',
-        colorBg: '#000',
-        isWalkable: false,
-        isTransparent: false,
-        isExplored: false,
-    }
-}
 
-function getFloor() {
-    return {
-        char: '.',
-        colorFg: '#404040',
-        colorBg: '#000',
-        isWalkable: true,
-        isTransparent: true,
-        isExplored: false,
-    }
-}
 
-class RandomWalk {
+class RandomWalk implements MapGenerationAlgorithm {
     nFloors: number
     percentFloor: number
     nFloorsGoal: number

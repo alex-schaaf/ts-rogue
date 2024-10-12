@@ -9,6 +9,7 @@ import { handleInput } from './game/inputHandler'
 import { getFovMap } from './render/fov'
 import { generateMap } from './generation/map'
 import { RandomWalk } from './generation/algorithms/randomWalk'
+import { CellularAutomataAlgorithm } from './generation/algorithms/cellularAutomata'
 
 
 
@@ -27,7 +28,7 @@ function main() {
     const mapWidth = 60
     const mapHeight = 24
 
-    const algorithm = new RandomWalk()
+    const algorithm = new CellularAutomataAlgorithm()
     let map = algorithm.generate(mapWidth, mapHeight)
 
     const game = new Game()
