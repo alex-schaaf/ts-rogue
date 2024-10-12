@@ -1,5 +1,3 @@
-import * as ROT from 'rot-js'
-import { Entity } from './ecs/entity'
 import LocationComponent from './ecs/components/location'
 import RenderableComponent from './ecs/components/renderable'
 import { Tile } from './game/tile'
@@ -7,6 +5,7 @@ import MovementSystem from './ecs/systems/movementSystem'
 import Game from './game/game'
 import { renderEntities } from './render/entityRenderer'
 import { renderMap } from './render/mapRenderer'
+import { handleInput } from './game/inputHandler'
 
 function generateMap(width: number, height: number): Record<string, Tile> {
     let map = {}
@@ -32,26 +31,7 @@ function generateMap(width: number, height: number): Record<string, Tile> {
     return map
 }
 
-function handleInput(
-    movementSystem: MovementSystem,
-    player: Entity,
-    event: KeyboardEvent
-) {
-    switch (event.key) {
-        case 'ArrowUp':
-            movementSystem.moveUp(player)
-            break
-        case 'ArrowDown':
-            movementSystem.moveDown(player)
-            break
-        case 'ArrowLeft':
-            movementSystem.moveLeft(player)
-            break
-        case 'ArrowRight':
-            movementSystem.moveRight(player)
-            break
-    }
-}
+
 
 function loop(game: Game) {
     game.display.clear()
