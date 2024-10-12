@@ -5,6 +5,8 @@ import RenderableComponent from './ecs/components/renderable'
 import { Tile } from './game/tile'
 import MovementSystem from './ecs/systems/movementSystem'
 import Game from './game/game'
+import { renderEntities } from './render/entityRenderer'
+import { renderMap } from './render/mapRenderer'
 
 function generateMap(width: number, height: number): Record<string, Tile> {
     let map = {}
@@ -17,7 +19,6 @@ function generateMap(width: number, height: number): Record<string, Tile> {
                     colorBg: '#000',
                     isWalkable: false,
                 }
-
             } else {
                 map[`${x},${y}`] = {
                     char: '.',
@@ -26,32 +27,9 @@ function generateMap(width: number, height: number): Record<string, Tile> {
                     isWalkable: true,
                 }
             }
-
         }
     }
     return map
-}
-
-function renderMap(display: ROT.Display, map: Record<string, Tile>) {
-    for (let key in map) {
-        let [x, y] = key.split(',').map(Number)
-        let tile = map[key]
-        display.draw(x, y, tile.char, tile.colorFg, tile.colorBg)
-    }
-}
-
-function renderEntities(display: ROT.Display, entities: Entity[]) {
-    for (let entity of entities) {
-        let location = entity.getComponent(LocationComponent)
-        let renderable = entity.getComponent(RenderableComponent)
-        display.draw(
-            location.x,
-            location.y,
-            renderable.char,
-            renderable.colorFg,
-            renderable.colorBg
-        )
-    }
 }
 
 function handleInput(
