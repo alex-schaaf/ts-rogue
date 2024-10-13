@@ -1,3 +1,27 @@
 body {
+    color: #fff;
+    font-size: 14px;
     background: #111827;
+}
+
+progress[value] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#healthBar {
+    width: 150px;
+    height: 14px;
+
+    background-color: #800000;
+    border: 1px solid #000;
+    border-radius: 2px;
+}
+
+#healthBar::-moz-progress-bar {
+    background-color: #ff0000;
+}
+
+#healthBar::-webkit-progress-value {
+    background: #ff0000;
 }
