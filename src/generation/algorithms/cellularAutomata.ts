@@ -1,34 +1,82 @@
-import { Map, XYtoCoords } from "../../game/game";
+import { CoordsToXY, Map, XYtoCoords } from "../../game/game";
 import { MapGenerationAlgorithm } from "../abstract";
 import { getFloor, getWall } from "../tiles";
 
+function countWalkableTiles(map: Map): number {
+    let count = 0
+
+    Object.values(map).forEach(tile => {
+        if (tile.isWalkable) {
+            count++
+        }
+    })
+
+    return count
+}
+
 class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
+    iterations: number
+    
+    constructor(iterations?: number) {
+       this.iterations = iterations || 10
+    }
+
     generate(width: number, height: number): Map {
         let map = seedMap(width, height)
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < this.iterations; i++) {
             map = this.iterate(map, width, height)
+        }
+
+        // fill in edges with walls
+        for (let y = 0; y < height; y++) {
+            map[XYtoCoords(0, y)] = getWall()
+            map[XYtoCoords(width - 1, y)] = getWall()
+        }
+        for (let x = 0; x < width; x++) {
+            map[XYtoCoords(x, 0)] = getWall()
+            map[XYtoCoords(x, height - 1)] = getWall()
         }
 
         return map
     }
 
     iterate(map: Map, width: number, height: number): Map {
-        let newMap = {}
+        // generate n random coordinates
+        const randomCoordinates: string[] = [];
+        const n = 450; // Number of random coordinates to generate
 
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                let wallCount = this.countWalls(map, x, y, width, height)
-
-                if (wallCount >= 5) {
-                    newMap[XYtoCoords(x, y)] = getWall()
-                } else {
-                    newMap[XYtoCoords(x, y)] = getFloor()
-                }
-            }
+        for (let i = 0; i < n; i++) {
+            const x = Math.floor(Math.random() * width);
+            const y = Math.floor(Math.random() * height);
+            randomCoordinates.push(XYtoCoords(x, y));
         }
 
-        return newMap
+        randomCoordinates.forEach((coords) => {
+            const [x, y] = CoordsToXY(coords)
+            let wallCount = this.countWalls(map, x, y, width, height)
+
+            if (wallCount >= 5) {
+                map[coords] = getWall()
+            } else {
+                map[coords] = getFloor()
+            }
+        })
+
+
+        // for (let y = 0; y < height; y++) {
+        //     for (let x = 0; x < width; x++) {
+        //         let wallCount = this.countWalls(map, x, y, width, height)
+
+        //         if (wallCount >= 5) {
+        //             newMap[XYtoCoords(x, y)] = getWall()
+        //         } else {
+        //             newMap[XYtoCoords(x, y)] = getFloor()
+        //         }
+        //     }
+        // }
+
+        return map
     }
 
     countWalls(map: Map, x: number, y: number, width: number, height: number): number {
@@ -41,7 +89,7 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
 
                 if (nx < 0 || nx >= width || ny < 0 || ny >= height) {
                     count++
-                } else if (map[XYtoCoords(nx, ny)].char === '#') {
+                } else if (map[XYtoCoords(nx, ny)]?.isWalkable === false) {
                     count++
                 }
             }

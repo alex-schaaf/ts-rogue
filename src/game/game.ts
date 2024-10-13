@@ -8,6 +8,11 @@ function XYtoCoords(x: number, y: number) {
     return `${x},${y}`
 }
 
+function CoordsToXY(coords: string): [number, number] {
+    const [x, y] = coords.split(',').map(Number)
+    return [x, y]
+}
+
 interface Level {
     map: Map
     entities: Entity[]
@@ -55,4 +60,4 @@ class Game implements GameInterface {
     }
 }
 
-export { Game, Map, XYtoCoords }
+export { Game, Map, XYtoCoords, CoordsToXY }
