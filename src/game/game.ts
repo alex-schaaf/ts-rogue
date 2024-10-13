@@ -37,8 +37,8 @@ class Game implements GameInterface {
     player: Entity
     settings: GameSettings
 
-    constructor() {
-        this.display = new ROT.Display({ width: 60, height: 24, fontSize: 24 })
+    constructor(width: number, height: number) {
+        this.display = new ROT.Display({ width: width, height: height, fontSize: 14 })
         const displayContainer = this.display.getContainer()
         if (!displayContainer) {
             throw new Error('Display container not found')

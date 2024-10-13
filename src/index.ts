@@ -10,6 +10,8 @@ import { getFovMap } from './render/fov'
 import { generateMap } from './generation/map'
 import { RandomWalk } from './generation/algorithms/randomWalk'
 import { CellularAutomataAlgorithm } from './generation/algorithms/cellularAutomata'
+import { BSP } from './generation/algorithms/binaryPartition'
+import { generate } from './generation/algorithms/rooms'
 
 
 
@@ -25,17 +27,17 @@ function loop(game: Game) {
 }
 
 function main() {
-    const mapWidth = 60
-    const mapHeight = 24
+    const mapWidth = 80
+    const mapHeight = 40
 
-    const algorithm = new CellularAutomataAlgorithm()
-    let map = algorithm.generate(mapWidth, mapHeight)
 
-    const game = new Game()
+    let map = generate(mapWidth, mapHeight)
+
+    const game = new Game(mapWidth, mapHeight)
     game.level.map = map
     game.level.entities.push(game.player)
 
-    game.player.addComponent(new LocationComponent(30, 12))
+    game.player.addComponent(new LocationComponent(23, 20))
     game.player.addComponent(new RenderableComponent('@', '#ff0', '#000'))
 
     const movementSystem = new MovementSystem(map)
