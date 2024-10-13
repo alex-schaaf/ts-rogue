@@ -1,6 +1,5 @@
-import HealthComponent from "../components/health";
-import { Entity } from "../entity";
-
+import HealthComponent from '../components/health'
+import { Entity } from '../entity'
 
 class HealthSystem {
     private getHealth(entity: Entity) {
@@ -30,4 +29,4 @@ class HealthSystem {
     }
 }
 
-export default HealthSystem;
+export default HealthSystem

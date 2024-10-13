@@ -1,5 +1,5 @@
-import { Entity } from "../ecs/entity"
-import MovementSystem from "../ecs/systems/movementSystem"
+import { Entity } from '../ecs/entity'
+import MovementSystem from '../ecs/systems/movementSystem'
 
 export function handleInput(
     movementSystem: MovementSystem,

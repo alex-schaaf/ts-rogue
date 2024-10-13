@@ -1,4 +1,4 @@
-import { Tile } from "../game/tile"
+import { Tile } from '../game/tile'
 
 function generateMap(width: number, height: number): Record<string, Tile> {
     let map = {}
@@ -28,4 +28,4 @@ function generateMap(width: number, height: number): Record<string, Tile> {
     return map
 }
 
-export {generateMap}
+export { generateMap }

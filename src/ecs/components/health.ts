@@ -8,4 +8,4 @@ class HealthComponent {
     }
 }
 
-export default HealthComponent;
+export default HealthComponent

@@ -1,24 +1,25 @@
-import { Component } from "./component";
-
+import { Component } from './component'
 
 class Entity {
-    components: Record<string, Component> = {};
+    components: Record<string, Component> = {}
 
     addComponent(component: Component) {
-        this.components[component.constructor.name] = component;
+        this.components[component.constructor.name] = component
     }
 
-    getComponent<T extends Component>(component: {new(...args: any[]): T}): T {
-        return this.components[component.name] as T;
+    getComponent<T extends Component>(component: {
+        new (...args: any[]): T
+    }): T {
+        return this.components[component.name] as T
     }
 
-    hasComponent<T extends Component>(component: {new(): T}): boolean {
-        return component.name in this.components;
+    hasComponent<T extends Component>(component: { new (): T }): boolean {
+        return component.name in this.components
     }
 
-    removeComponent<T extends Component>(component: {new(): T}): void {
-        delete this.components[component.name];
+    removeComponent<T extends Component>(component: { new (): T }): void {
+        delete this.components[component.name]
     }
 }
 
-export { Entity };
+export { Entity }

@@ -1,10 +1,7 @@
-import { Map, XYtoCoords } from "../../game/game";
-import { MapGenerationAlgorithm } from "../abstract";
-import { CardinalDirection } from "../enums";
-import { getFloor, getWall } from "../tiles";
-
-
-
+import { Map, XYtoCoords } from '../../game/game'
+import { MapGenerationAlgorithm } from '../abstract'
+import { CardinalDirection } from '../enums'
+import { getFloor, getWall } from '../tiles'
 
 class RandomWalk implements MapGenerationAlgorithm {
     nFloors: number
@@ -20,7 +17,6 @@ class RandomWalk implements MapGenerationAlgorithm {
 
     level: Map
 
-
     constructor() {
         this.nFloors = 0
         this.nFloorsGoal = 0
@@ -28,7 +24,7 @@ class RandomWalk implements MapGenerationAlgorithm {
         this.iterations = 25000 // in case percentage goal is never reached
         this.centerWeight = 0.15
         this.previousDirectionWeight = 0.7
-        
+
         this.drunkardX = 0
         this.drunkardY = 0
         this.previousDirection = CardinalDirection.East
@@ -90,13 +86,17 @@ class RandomWalk implements MapGenerationAlgorithm {
         }
 
         // normalize direction probabilities
-        const total = directions.north + directions.east + directions.south + directions.west
+        const total =
+            directions.north +
+            directions.east +
+            directions.south +
+            directions.west
         directions.north /= total
         directions.east /= total
         directions.south /= total
         directions.west /= total
 
-        // choose direction 
+        // choose direction
         let dx = 0
         let dy = 0
         let direction = CardinalDirection.North
@@ -105,11 +105,17 @@ class RandomWalk implements MapGenerationAlgorithm {
             dx = 0
             dy = -1
             direction = CardinalDirection.North
-        } else if (directions.north <= rand && rand <= (directions.north + directions.south)) {
+        } else if (
+            directions.north <= rand &&
+            rand <= directions.north + directions.south
+        ) {
             dx = 0
             dy = 1
-            direction =CardinalDirection.South
-        } else if ((directions.north + directions.south) <= rand && rand <= (directions.north + directions.south + directions.east)) {
+            direction = CardinalDirection.South
+        } else if (
+            directions.north + directions.south <= rand &&
+            rand <= directions.north + directions.south + directions.east
+        ) {
             dx = 1
             dy = 0
             direction = CardinalDirection.East
@@ -120,7 +126,12 @@ class RandomWalk implements MapGenerationAlgorithm {
         }
 
         // walk
-        if (1 < this.drunkardX+dx && this.drunkardX+dx < width-2 && 1 < this.drunkardY+dy && this.drunkardY+dy < height-2) {
+        if (
+            1 < this.drunkardX + dx &&
+            this.drunkardX + dx < width - 2 &&
+            1 < this.drunkardY + dy &&
+            this.drunkardY + dy < height - 2
+        ) {
             this.drunkardX += dx
             this.drunkardY += dy
 
@@ -128,7 +139,8 @@ class RandomWalk implements MapGenerationAlgorithm {
 
             let tile = this.level[XYtoCoords(this.drunkardX, this.drunkardY)]
             if (tile?.isWalkable === false) {
-                this.level[XYtoCoords(this.drunkardX, this.drunkardY)] = getFloor()
+                this.level[XYtoCoords(this.drunkardX, this.drunkardY)] =
+                    getFloor()
                 this.nFloors++
                 this.previousDirection = direction
             }

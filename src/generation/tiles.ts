@@ -1,4 +1,4 @@
-import { Tile } from "../game/tile"
+import { Tile } from '../game/tile'
 
 function getWall(): Tile {
     return {

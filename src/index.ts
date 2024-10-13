@@ -10,13 +10,16 @@ import { generate } from './generation/algorithms/rooms'
 import { Entity } from './ecs/entity'
 import HealthComponent from './ecs/components/health'
 
-
-
 function loop(game: Game) {
     game.display.clear()
 
     let playerLoc = game.player.getComponent(LocationComponent)
-    const fovMap = getFovMap(game.level.map, playerLoc.x, playerLoc.y, game.settings.fovRadius)
+    const fovMap = getFovMap(
+        game.level.map,
+        playerLoc.x,
+        playerLoc.y,
+        game.settings.fovRadius
+    )
 
     renderMap(game.display, game.level.map, fovMap)
     renderEntities(game.display, game.level.entities)
@@ -26,7 +29,6 @@ function loop(game: Game) {
 function main() {
     const mapWidth = 50
     const mapHeight = 40
-
 
     let map = generate(mapWidth, mapHeight)
 

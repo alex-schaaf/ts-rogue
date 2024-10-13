@@ -38,7 +38,11 @@ class Game implements GameInterface {
     settings: GameSettings
 
     constructor(width: number, height: number) {
-        this.display = new ROT.Display({ width: width, height: height, fontSize: 14 })
+        this.display = new ROT.Display({
+            width: width,
+            height: height,
+            fontSize: 14,
+        })
         const displayContainer = this.display.getContainer()
         if (!displayContainer) {
             throw new Error('Display container not found')
@@ -57,7 +61,7 @@ class Game implements GameInterface {
         this.player = new Entity()
 
         this.settings = {
-            fovRadius: 6
+            fovRadius: 6,
         }
 
         console.debug('Game initialized')

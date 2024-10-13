@@ -1,11 +1,11 @@
-import { CoordsToXY, Map, XYtoCoords } from "../../game/game";
-import { MapGenerationAlgorithm } from "../abstract";
-import { getFloor, getWall } from "../tiles";
+import { CoordsToXY, Map, XYtoCoords } from '../../game/game'
+import { MapGenerationAlgorithm } from '../abstract'
+import { getFloor, getWall } from '../tiles'
 
 function countWalkableTiles(map: Map): number {
     let count = 0
 
-    Object.values(map).forEach(tile => {
+    Object.values(map).forEach((tile) => {
         if (tile.isWalkable) {
             count++
         }
@@ -16,9 +16,9 @@ function countWalkableTiles(map: Map): number {
 
 class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
     iterations: number
-    
+
     constructor(iterations?: number) {
-       this.iterations = iterations || 10
+        this.iterations = iterations || 10
     }
 
     generate(width: number, height: number): Map {
@@ -43,13 +43,13 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
 
     iterate(map: Map, width: number, height: number): Map {
         // generate n random coordinates
-        const randomCoordinates: string[] = [];
-        const n = 450; // Number of random coordinates to generate
+        const randomCoordinates: string[] = []
+        const n = 450 // Number of random coordinates to generate
 
         for (let i = 0; i < n; i++) {
-            const x = Math.floor(Math.random() * width);
-            const y = Math.floor(Math.random() * height);
-            randomCoordinates.push(XYtoCoords(x, y));
+            const x = Math.floor(Math.random() * width)
+            const y = Math.floor(Math.random() * height)
+            randomCoordinates.push(XYtoCoords(x, y))
         }
 
         randomCoordinates.forEach((coords) => {
@@ -62,7 +62,6 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
                 map[coords] = getFloor()
             }
         })
-
 
         // for (let y = 0; y < height; y++) {
         //     for (let x = 0; x < width; x++) {
@@ -79,7 +78,13 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
         return map
     }
 
-    countWalls(map: Map, x: number, y: number, width: number, height: number): number {
+    countWalls(
+        map: Map,
+        x: number,
+        y: number,
+        width: number,
+        height: number
+    ): number {
         let count = 0
 
         for (let dy = -1; dy <= 1; dy++) {
@@ -116,6 +121,5 @@ function seedMap(width: number, height: number): Map {
 
     return map
 }
-
 
 export { CellularAutomataAlgorithm }

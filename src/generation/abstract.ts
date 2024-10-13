@@ -1,4 +1,4 @@
-import { Map } from "../game/game";
+import { Map } from '../game/game'
 
 interface MapGenerationAlgorithm {
     generate(width: number, height: number): Map

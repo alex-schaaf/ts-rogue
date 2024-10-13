@@ -63,7 +63,6 @@ function getSibling(node: Node): Node | undefined {
     return node.parent.left === node ? node.parent.right : node.parent.left
 }
 
-
 class BSP implements MapGenerationAlgorithm {
     generate(width: number, height: number): Map {
         let arr = this.seedMap(width, height)
@@ -96,8 +95,6 @@ class BSP implements MapGenerationAlgorithm {
 
             let [x0, y0] = getCenter(currentNode)
             let [x1, y1] = getCenter(siblingNode)
-
-
         }
     }
 

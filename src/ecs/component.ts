@@ -1,1 +1,1 @@
-export interface Component{}
+export interface Component {}
