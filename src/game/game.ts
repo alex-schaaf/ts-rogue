@@ -43,7 +43,11 @@ class Game implements GameInterface {
         if (!displayContainer) {
             throw new Error('Display container not found')
         }
-        document.body.appendChild(displayContainer)
+        const mapElement = document.getElementById('map')
+        if (!mapElement) {
+            throw new Error('Map element not found')
+        }
+        mapElement.appendChild(displayContainer)
 
         this.level = {
             map: {},
