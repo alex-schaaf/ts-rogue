@@ -110,9 +110,10 @@ function generate(width: number, height: number): Map {
     let map = {}
 
     let rooms = [
+        createRectangularRoom(3, 27, 10, 8),
         createRectangularRoom(20, 15, 10, 10),
-        createRectangularRoom(40, 15, 10, 9),
-        createRectangularRoom(50, 27, 10, 8),
+        createRectangularRoom(37, 15, 10, 9),
+        createRectangularRoom(36, 26, 10, 4),
     ]
 
     rooms.forEach((room) => {

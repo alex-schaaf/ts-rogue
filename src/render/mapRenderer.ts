@@ -11,6 +11,7 @@ export function renderMap(
     }
 
     function isExplored(coord: string) {
+        return true
         return map[coord].isExplored === true
     }
 

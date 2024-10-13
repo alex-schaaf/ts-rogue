@@ -27,7 +27,7 @@ function loop(game: Game) {
 }
 
 function main() {
-    const mapWidth = 80
+    const mapWidth = 50
     const mapHeight = 40
 
 
