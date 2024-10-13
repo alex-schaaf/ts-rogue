@@ -12,6 +12,8 @@ import { RandomWalk } from './generation/algorithms/randomWalk'
 import { CellularAutomataAlgorithm } from './generation/algorithms/cellularAutomata'
 import { BSP } from './generation/algorithms/binaryPartition'
 import { generate } from './generation/algorithms/rooms'
+import { Entity } from './ecs/entity'
+import HealthComponent from './ecs/components/health'
 
 
 
@@ -38,7 +40,14 @@ function main() {
     game.level.entities.push(game.player)
 
     game.player.addComponent(new LocationComponent(23, 20))
+    game.player.addComponent(new HealthComponent(10, 10))
     game.player.addComponent(new RenderableComponent('@', '#ff0', '#000'))
+
+    let rat = new Entity()
+    rat.addComponent(new LocationComponent(30, 20))
+    rat.addComponent(new HealthComponent(2, 2))
+    rat.addComponent(new RenderableComponent('r', '#f00', '#000'))
+    game.level.entities.push(rat)
 
     const movementSystem = new MovementSystem(map)
 
