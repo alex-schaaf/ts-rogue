@@ -4,13 +4,18 @@ import LocationComponent from '../components/location'
 
 class MovementSystem {
     map: Record<string, Tile>
+    entities: Entity[] = []
 
-    constructor(map: Record<string, Tile>) {
+    constructor(map: Record<string, Tile>, entities: Entity[]) {
         this.map = map
+        this.entities = entities
     }
 
     moveBy = (entity: Entity, dx: number, dy: number) => {
         let location = entity.getComponent(LocationComponent)
+        if (!location) {
+            return
+        } 
         let key = `${location.x + dx},${location.y + dy}`
 
         if (!(key in this.map)) {

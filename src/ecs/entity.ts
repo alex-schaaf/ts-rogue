@@ -9,7 +9,7 @@ class Entity {
 
     getComponent<T extends Component>(component: {
         new (...args: any[]): T
-    }): T {
+    }): T | undefined {
         return this.components[component.name] as T
     }
 
