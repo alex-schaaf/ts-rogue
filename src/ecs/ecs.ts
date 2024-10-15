@@ -79,7 +79,6 @@ class ECS {
         let entity = this.nextEntityId
         this.nextEntityId++
         this.entities.set(entity, new ComponentContainer())
-        console.debug('ECS.entities', this.entities)
         return entity
     }
 
@@ -97,16 +96,16 @@ class ECS {
 
     // API: Components
     public addComponent(entity: Entity, component: Component): void {
-        this.entities.get(entity).add(component)
+        this.entities.get(entity)!.add(component)
         this.checkE(entity)
     }
 
     public getComponents(entity: Entity): ComponentContainer {
-        return this.entities.get(entity)
+        return this.entities.get(entity)!
     }
 
     public removeComponent(entity: Entity, componentClass: Function): void {
-        this.entities.get(entity).delete(componentClass)
+        this.entities.get(entity)!.delete(componentClass)
         this.checkE(entity)
     }
 

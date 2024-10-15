@@ -1,5 +1,5 @@
 import { Logger } from '../../lib/logger'
-import { IsPlayer } from '../components/components'
+import { IsPlayer } from '../components/IsPlayer'
 import { Entity, System } from '../ecs'
 import { MoveIntent } from '../events/movement'
 

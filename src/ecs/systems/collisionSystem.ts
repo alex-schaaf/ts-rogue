@@ -1,10 +1,11 @@
 import { GameMap, XYtoCoords } from '../../game/game'
-import { BlockMovement, Location } from '../components/components'
+import { BlockMovement } from '../components/BlockMovement'
+import { Position } from '../components/Position'
 import { System } from '../ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 
 class CollisionSystem extends System {
-    componentsRequired = new Set<Function>([Location, BlockMovement])
+    componentsRequired = new Set<Function>([Position, BlockMovement])
     gameMap: GameMap
 
     constructor(gameMap: GameMap) {
@@ -20,7 +21,7 @@ class CollisionSystem extends System {
 
     private handleMoveIntent(event: MoveIntent): void {
         const container = this.ecs.getComponents(event.entityId)
-        const location = container.get(Location)
+        const location = container.get(Position)
 
         const targetX = location.x + event.dx
         const targetY = location.y + event.dy
@@ -41,7 +42,7 @@ class CollisionSystem extends System {
     private isBlockedByEntity(x: number, y: number): boolean {
         for (const entity of this.ecs.getEntitiesForSystem(this)) {
             const container = this.ecs.getComponents(entity)
-            const location = container.get(Location)
+            const location = container.get(Position)
 
             if (location.x === x && location.y === y) {
                 return true

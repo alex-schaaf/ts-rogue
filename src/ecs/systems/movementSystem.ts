@@ -1,9 +1,9 @@
 import { Entity, System } from '../ecs'
 import { MoveCommand } from '../events/movement'
-import { Location } from '../components/components'
+import { Position } from '../components/Position'
 
 class MovementSystem extends System {
-    componentsRequired = new Set<Function>([Location])
+    componentsRequired = new Set<Function>([Position])
 
     constructor() {
         super()
@@ -17,7 +17,7 @@ class MovementSystem extends System {
 
     public handleMoveIntent(event: MoveCommand): void {
         const container = this.ecs.getComponents(event.entityId)
-        const location = container.get(Location)
+        const location = container.get(Position)
 
         location.x += event.dx
         location.y += event.dy
