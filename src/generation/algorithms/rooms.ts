@@ -1,4 +1,4 @@
-import { GameMap, XYtoCoords } from '../../game/game'
+import { GameMap } from '../../game/game'
 import { getFloor, getWall } from '../tiles'
 
 interface RectangularRoom {
@@ -62,28 +62,28 @@ function getSimpleTunnel(p1: Point, p2: Point): [number, number][] {
 function paintRoom(map: GameMap, room: RectangularRoom) {
     // Fill the room with floor tiles
     getInnerArea(room).forEach(([x, y]) => {
-        map[XYtoCoords(x, y)] = getFloor()
+        map.set(x, y, getFloor())
     })
     // Fill the edges with wall tiles
     for (let x = room.x0; x <= room.x1; x++) {
-        map[XYtoCoords(x, room.y0)] = getWall()
-        map[XYtoCoords(x, room.y1)] = getWall()
+        map.set(x, room.y0, getWall())
+        map.set(x, room.y1, getWall())
     }
     for (let y = room.y0; y <= room.y1; y++) {
-        map[XYtoCoords(room.x0, y)] = getWall()
-        map[XYtoCoords(room.x1, y)] = getWall()
+        map.set(room.x0, y, getWall())
+        map.set(room.x1, y, getWall())
     }
 }
 
 function paintTunnel(map: GameMap, tunnel: [number, number][]) {
     // Fill the tunnel with floor tiles
     tunnel.forEach(([x, y]) => {
-        map[XYtoCoords(x, y)] = getFloor()
+        map.set(x, y, getFloor())
     })
     // Fill the edges with wall tiles, except for the tunnel endpoints
 
     function isEmpty(x: number, y: number) {
-        return map[XYtoCoords(x, y)] === undefined
+        return map.get(x, y) === undefined
     }
 
     tunnel.forEach(([x, y], idx) => {
@@ -100,14 +100,14 @@ function paintTunnel(map: GameMap, tunnel: [number, number][]) {
         ]
         surroundingTiles.forEach(([x, y]) => {
             if (isEmpty(x, y)) {
-                map[XYtoCoords(x, y)] = getWall()
+                map.set(x, y, getWall())
             }
         })
     })
 }
 
 function generate(width: number, height: number): GameMap {
-    let map = {}
+    let map = new GameMap()
 
     let rooms = [
         createRectangularRoom(3, 27, 10, 8),

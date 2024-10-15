@@ -1,22 +1,40 @@
 import * as ROT from 'rot-js'
 import { Tile } from './tile'
-import { Entity } from '../ecs/entity'
 import { ECS } from '../ecs/ecs'
 
-type GameMap = Record<string, Tile>
+class GameMap {
+    private BIT_LENGTH = 16
+    private map: Record<number, Tile> = {}
 
-function XYtoCoords(x: number, y: number) {
-    return `${x},${y}`
-}
+    private packCoords(x: number, y: number): number {
+        return (x << this.BIT_LENGTH) | y
+    }
 
-function CoordsToXY(coords: string): [number, number] {
-    const [x, y] = coords.split(',').map(Number)
-    return [x, y]
+    private unpackCoords(packed: number): [number, number] {
+        const x = packed >> this.BIT_LENGTH
+        const y = packed & ((1 << this.BIT_LENGTH) - 1)
+        return [x, y]
+    }
+
+    public get(x: number, y: number): Tile {
+        return this.map[this.packCoords(x, y)]
+    }
+
+    public set(x: number, y: number, tile: Tile) {
+        this.map[this.packCoords(x, y)] = tile
+    }
+
+    public delete(x: number, y: number) {
+        delete this.map[this.packCoords(x, y)]
+    }
+
+    public getCoords(): [number, number][] {
+        return Object.keys(this.map).map(Number).map(this.unpackCoords)
+    }
 }
 
 interface Level {
     map: GameMap
-    entities: Entity[]
 }
 
 interface GameSettings {
@@ -47,8 +65,7 @@ class Game {
         mapElement.appendChild(displayContainer)
 
         this.level = {
-            map: {},
-            entities: [],
+            map: new GameMap(),
         }
 
         this.settings = {
@@ -59,4 +76,4 @@ class Game {
     }
 }
 
-export { Game, GameMap, XYtoCoords, CoordsToXY }
+export { Game, GameMap }

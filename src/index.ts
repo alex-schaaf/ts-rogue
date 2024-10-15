@@ -38,10 +38,8 @@ function main() {
     const mapWidth = 50
     const mapHeight = 40
 
-    let map = generate(mapWidth, mapHeight)
-
     const game = new Game(mapWidth, mapHeight)
-    game.level.map = map
+    game.level.map = generate(mapWidth, mapHeight)
 
     const renderSystem = new EntityRenderSystem(game.display)
     game.ecs.addSystem(renderSystem)

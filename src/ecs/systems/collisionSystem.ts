@@ -1,4 +1,4 @@
-import { GameMap, XYtoCoords } from '../../game/game'
+import { GameMap } from '../../game/game'
 import { BlockMovement } from '../components/BlockMovement'
 import { Position } from '../components/Position'
 import { System } from '../ecs'
@@ -52,8 +52,7 @@ class CollisionSystem extends System {
     }
 
     private isBlockedByMap(x: number, y: number): boolean {
-        const coords = XYtoCoords(x, y)
-        const tile = this.gameMap[coords]
+        const tile = this.gameMap.get(x, y)
         return !tile.isWalkable
     }
 }
