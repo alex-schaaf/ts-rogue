@@ -1,4 +1,4 @@
-import { CoordsToXY, Map, XYtoCoords } from '../../game/game'
+import { GameMap, XYtoCoords } from '../../game/game'
 import { MapGenerationAlgorithm } from '../abstract'
 import { getFloor, getWall } from '../tiles'
 
@@ -64,7 +64,7 @@ function getSibling(node: Node): Node | undefined {
 }
 
 class BSP implements MapGenerationAlgorithm {
-    generate(width: number, height: number): Map {
+    generate(width: number, height: number): GameMap {
         let arr = this.seedMap(width, height)
 
         let root: Node = { x0: 0, y0: 0, x1: width, y1: height, depth: 0 }
@@ -210,8 +210,8 @@ class BSP implements MapGenerationAlgorithm {
         this.split(node.right, maxDepth)
     }
 
-    transformArrayToMap(arr: Array2D<boolean>): Map {
-        let map: Map = {}
+    transformArrayToMap(arr: Array2D<boolean>): GameMap {
+        let map: GameMap = {}
         arr.forEach((row, y) => {
             row.forEach((isFloor, x) => {
                 let coords = XYtoCoords(x, y)

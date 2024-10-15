@@ -1,7 +1,7 @@
 import * as ROT from 'rot-js'
-import { Map, XYtoCoords } from '../game/game'
+import { GameMap, XYtoCoords } from '../game/game'
 
-function isTransparent(map: Map, x: number, y: number) {
+function isTransparent(map: GameMap, x: number, y: number) {
     const coords = XYtoCoords(x, y)
     if (coords in map) {
         return map[coords].isTransparent
@@ -9,11 +9,11 @@ function isTransparent(map: Map, x: number, y: number) {
     return false
 }
 
-function lightPasses(map: Map, x: number, y: number): boolean {
+function lightPasses(map: GameMap, x: number, y: number): boolean {
     return isTransparent(map, x, y)
 }
 
-function getFovMap(map: Map, x: number, y: number, radius: number) {
+function getFovMap(map: GameMap, x: number, y: number, radius: number) {
     const fovMap: Record<string, boolean> = {}
     const fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
         lightPasses(map, x, y)

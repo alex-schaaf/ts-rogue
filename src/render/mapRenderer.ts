@@ -1,13 +1,15 @@
 import * as ROT from 'rot-js'
 import { Tile } from '../game/tile'
+import { GameMap } from '../game/game'
 
 export function renderMap(
     display: ROT.Display,
-    map: Record<string, Tile>,
-    fovMap: Record<string, boolean>
+    map: GameMap,
+    // fovMap: Record<string, boolean>
 ) {
     function isVisible(coord: string) {
-        return coord in fovMap
+        // return coord in fovMap
+        return true
     }
 
     function isExplored(coord: string) {

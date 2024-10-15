@@ -1,4 +1,4 @@
-import { CoordsToXY, Map, XYtoCoords } from '../../game/game'
+import { GameMap, XYtoCoords } from '../../game/game'
 import { getFloor, getWall } from '../tiles'
 
 interface RectangularRoom {
@@ -59,7 +59,7 @@ function getSimpleTunnel(p1: Point, p2: Point): [number, number][] {
     return tunnel
 }
 
-function paintRoom(map: Map, room: RectangularRoom) {
+function paintRoom(map: GameMap, room: RectangularRoom) {
     // Fill the room with floor tiles
     getInnerArea(room).forEach(([x, y]) => {
         map[XYtoCoords(x, y)] = getFloor()
@@ -75,7 +75,7 @@ function paintRoom(map: Map, room: RectangularRoom) {
     }
 }
 
-function paintTunnel(map: Map, tunnel: [number, number][]) {
+function paintTunnel(map: GameMap, tunnel: [number, number][]) {
     // Fill the tunnel with floor tiles
     tunnel.forEach(([x, y]) => {
         map[XYtoCoords(x, y)] = getFloor()
@@ -106,7 +106,7 @@ function paintTunnel(map: Map, tunnel: [number, number][]) {
     })
 }
 
-function generate(width: number, height: number): Map {
+function generate(width: number, height: number): GameMap {
     let map = {}
 
     let rooms = [

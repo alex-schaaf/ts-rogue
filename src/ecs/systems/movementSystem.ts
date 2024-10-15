@@ -1,49 +1,29 @@
-import { Entity } from '../entity'
-import { Tile } from '../../game/tile'
-import LocationComponent from '../components/location'
+import { Entity, System } from '../ecs'
+import { MoveCommand } from '../events/movement'
+import { Location } from '../components'
 
-class MovementSystem {
-    map: Record<string, Tile>
-    entities: Entity[] = []
+class MovementSystem extends System {
+    componentsRequired = new Set<Function>([Location])
 
-    constructor(map: Record<string, Tile>, entities: Entity[]) {
-        this.map = map
-        this.entities = entities
+    constructor() {
+        super()
     }
 
-    moveBy = (entity: Entity, dx: number, dy: number) => {
-        let location = entity.getComponent(LocationComponent)
-        if (!location) {
-            return
-        } 
-        let key = `${location.x + dx},${location.y + dy}`
+    public update(entities: Set<Entity>): void {
 
-        if (!(key in this.map)) {
-            return
-        }
-        if (!this.map[key].isWalkable) {
-            return
-        }
-
-        location.x += dx
-        location.y += dy
     }
 
-    moveUp = (entity: Entity) => {
-        this.moveBy(entity, 0, -1)
+    public registerEventHandlers(): void {
+        this.eventBus.on(MoveCommand, this.handleMoveIntent.bind(this))
     }
 
-    moveDown = (entity: Entity) => {
-        this.moveBy(entity, 0, 1)
-    }
+    public handleMoveIntent(event: MoveCommand): void {
+        const container = this.ecs.getComponents(event.entityId)
+        const location = container.get(Location)
 
-    moveLeft = (entity: Entity) => {
-        this.moveBy(entity, -1, 0)
-    }
-
-    moveRight = (entity: Entity) => {
-        this.moveBy(entity, 1, 0)
+        location.x += event.dx
+        location.y += event.dy
     }
 }
 
-export default MovementSystem
+export { MovementSystem }

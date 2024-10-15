@@ -1,8 +1,8 @@
-import { CoordsToXY, Map, XYtoCoords } from '../../game/game'
+import { CoordsToXY, GameMap, XYtoCoords } from '../../game/game'
 import { MapGenerationAlgorithm } from '../abstract'
 import { getFloor, getWall } from '../tiles'
 
-function countWalkableTiles(map: Map): number {
+function countWalkableTiles(map: GameMap): number {
     let count = 0
 
     Object.values(map).forEach((tile) => {
@@ -21,7 +21,7 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
         this.iterations = iterations || 10
     }
 
-    generate(width: number, height: number): Map {
+    generate(width: number, height: number): GameMap {
         let map = seedMap(width, height)
 
         for (let i = 0; i < this.iterations; i++) {
@@ -41,7 +41,7 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
         return map
     }
 
-    iterate(map: Map, width: number, height: number): Map {
+    iterate(map: GameMap, width: number, height: number): GameMap {
         // generate n random coordinates
         const randomCoordinates: string[] = []
         const n = 450 // Number of random coordinates to generate
@@ -79,7 +79,7 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
     }
 
     countWalls(
-        map: Map,
+        map: GameMap,
         x: number,
         y: number,
         width: number,
@@ -105,7 +105,7 @@ class CellularAutomataAlgorithm implements MapGenerationAlgorithm {
 }
 
 // helper function to seed map with random walls
-function seedMap(width: number, height: number): Map {
+function seedMap(width: number, height: number): GameMap {
     let map = {}
 
     // seed map with random walls

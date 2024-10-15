@@ -1,8 +1,9 @@
 import * as ROT from 'rot-js'
 import { Tile } from './tile'
 import { Entity } from '../ecs/entity'
+import { ECS } from '../ecs/ecs'
 
-type Map = Record<string, Tile>
+type GameMap = Record<string, Tile>
 
 function XYtoCoords(x: number, y: number) {
     return `${x},${y}`
@@ -14,7 +15,7 @@ function CoordsToXY(coords: string): [number, number] {
 }
 
 interface Level {
-    map: Map
+    map: GameMap
     entities: Entity[]
 }
 
@@ -22,20 +23,13 @@ interface GameSettings {
     fovRadius: number
 }
 
-interface GameInterface {
+
+class Game {
     display: ROT.Display
     level: Level
-
-    player: Entity
-
     settings: GameSettings
-}
 
-class Game implements GameInterface {
-    display: ROT.Display
-    level: Level
-    player: Entity
-    settings: GameSettings
+    public ecs = new ECS()
 
     constructor(width: number, height: number) {
         this.display = new ROT.Display({
@@ -58,8 +52,6 @@ class Game implements GameInterface {
             entities: [],
         }
 
-        this.player = new Entity()
-
         this.settings = {
             fovRadius: 6,
         }
@@ -68,4 +60,4 @@ class Game implements GameInterface {
     }
 }
 
-export { Game, Map, XYtoCoords, CoordsToXY }
+export { Game, GameMap, XYtoCoords, CoordsToXY }

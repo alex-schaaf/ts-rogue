@@ -1,33 +1,30 @@
-import LocationComponent from './ecs/components/location'
-import RenderableComponent from './ecs/components/renderable'
-import MovementSystem from './ecs/systems/movementSystem'
 import { Game } from './game/game'
-import { renderEntities } from './render/entityRenderer'
 import { renderMap } from './render/mapRenderer'
-import { handleInput } from './game/inputHandler'
-import { getFovMap } from './render/fov'
 import { generate } from './generation/algorithms/rooms'
-import { Entity } from './ecs/entity'
-import HealthComponent from './ecs/components/health'
-import BlockMovementComponent from './ecs/components/blockMovement'
-import CollisionSystem from './ecs/systems/collisionSystem'
+
+
+import { InputSystem } from './ecs/systems/InputSystem'
+import { IsPlayer, Location, Renderable } from './ecs/components'
+import { EntityRenderSystem } from './ecs/systems/EntityRenderSystem'
+import { MovementSystem } from './ecs/systems/MovementSystem'
+import { CollisionSystem } from './ecs/systems/CollisionSystem'
 
 function loop(game: Game) {
     game.display.clear()
+    renderMap(game.display, game.level.map)
+    game.ecs.update()
 
-    let playerLoc = game.player.getComponent(LocationComponent)
-    if (!playerLoc) {
-        throw new Error('Player has no location component')
-    }
-    const fovMap = getFovMap(
-        game.level.map,
-        playerLoc.x,
-        playerLoc.y,
-        game.settings.fovRadius
-    )
 
-    renderMap(game.display, game.level.map, fovMap)
-    renderEntities(game.display, game.level.entities)
+    // if (!playerLoc) {
+    //     throw new Error('Player has no location component')
+    // }
+    // const fovMap = getFovMap(
+    //     game.level.map,
+    //     playerLoc.x,
+    //     playerLoc.y,
+    //     game.settings.fovRadius
+    // )
+
     requestAnimationFrame(() => loop(game))
 }
 
@@ -39,25 +36,26 @@ function main() {
 
     const game = new Game(mapWidth, mapHeight)
     game.level.map = map
-    game.level.entities.push(game.player)
 
-    game.player.addComponent(new LocationComponent(23, 20))
-    game.player.addComponent(new HealthComponent(10, 10))
-    game.player.addComponent(new BlockMovementComponent(true))
-    game.player.addComponent(new RenderableComponent('@', '#ff0', '#000'))
+    const renderSystem = new EntityRenderSystem(game.display)
+    game.ecs.addSystem(renderSystem)
 
-    let rat = new Entity()
-    rat.addComponent(new LocationComponent(30, 20))
-    rat.addComponent(new HealthComponent(2, 2))
-    rat.addComponent(new BlockMovementComponent(true))
-    rat.addComponent(new RenderableComponent('r', '#f00', '#000'))
-    game.level.entities.push(rat)
+    const player = game.ecs.addEntity()
+    game.ecs.addComponent(player, new IsPlayer())
+    game.ecs.addComponent(player, new Location(25, 20))
+    game.ecs.addComponent(player, new Renderable('@', '#ff0', '#000'))
 
-    const movementSystem = new MovementSystem(map, game.level.entities)
-    const collisionSystem = new CollisionSystem(game.level.entities)
+    const inputSystem = new InputSystem(player)
+    game.ecs.addSystem(inputSystem)
 
+    const collisionSystem = new CollisionSystem(game.level.map)
+    game.ecs.addSystem(collisionSystem)
+
+    const movementSystem = new MovementSystem()
+    game.ecs.addSystem(movementSystem)
+    
     window.addEventListener('keydown', (event) =>
-        handleInput(movementSystem, collisionSystem, game.player, event)
+        inputSystem.handleInput(event)
     )
 
     requestAnimationFrame(() => loop(game))
