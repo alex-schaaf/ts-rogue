@@ -1,6 +1,6 @@
 import { Entity, System } from '../ecs'
 import { MoveCommand } from '../events/movement'
-import { Location } from '../components'
+import { Location } from '../components/components'
 
 class MovementSystem extends System {
     componentsRequired = new Set<Function>([Location])

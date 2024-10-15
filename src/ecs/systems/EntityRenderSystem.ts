@@ -1,5 +1,5 @@
 import { Display } from 'rot-js'
-import { Renderable, Location } from '../components'
+import { Renderable, Location } from '../components/components'
 import { Entity, System } from '../ecs'
 
 class EntityRenderSystem extends System {

@@ -1,4 +1,4 @@
-import { Component } from './ecs'
+import { Component } from '../ecs'
 
 export class IsPlayer extends Component {
     constructor() {

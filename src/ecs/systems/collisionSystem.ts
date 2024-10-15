@@ -1,5 +1,5 @@
 import { GameMap, XYtoCoords } from '../../game/game'
-import { BlockMovement, Location } from '../components'
+import { BlockMovement, Location } from '../components/components'
 import { System } from '../ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 

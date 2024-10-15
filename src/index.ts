@@ -3,10 +3,13 @@ import { renderMap } from './render/mapRenderer'
 import { generate } from './generation/algorithms/rooms'
 
 import { InputSystem } from './ecs/systems/InputSystem'
-import { IsPlayer, Location, Renderable } from './ecs/components'
+import { IsPlayer, Location, Renderable } from './ecs/components/components'
 import { EntityRenderSystem } from './ecs/systems/EntityRenderSystem'
 import { MovementSystem } from './ecs/systems/MovementSystem'
 import { CollisionSystem } from './ecs/systems/CollisionSystem'
+import { Logger, LogLevel } from './lib/logger'
+
+Logger.logLevel = LogLevel.WARN
 
 function loop(game: Game) {
     game.display.clear()
