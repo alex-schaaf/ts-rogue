@@ -4,7 +4,7 @@ import { GameMap } from '../game/game'
 
 export function renderMap(
     display: ROT.Display,
-    map: GameMap,
+    map: GameMap
     // fovMap: Record<string, boolean>
 ) {
     function isVisible(coord: string) {

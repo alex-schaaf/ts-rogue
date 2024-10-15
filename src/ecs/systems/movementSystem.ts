@@ -9,9 +9,7 @@ class MovementSystem extends System {
         super()
     }
 
-    public update(entities: Set<Entity>): void {
-
-    }
+    public update(entities: Set<Entity>): void {}
 
     public registerEventHandlers(): void {
         this.eventBus.on(MoveCommand, this.handleMoveIntent.bind(this))

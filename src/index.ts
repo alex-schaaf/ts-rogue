@@ -2,7 +2,6 @@ import { Game } from './game/game'
 import { renderMap } from './render/mapRenderer'
 import { generate } from './generation/algorithms/rooms'
 
-
 import { InputSystem } from './ecs/systems/InputSystem'
 import { IsPlayer, Location, Renderable } from './ecs/components'
 import { EntityRenderSystem } from './ecs/systems/EntityRenderSystem'
@@ -13,7 +12,6 @@ function loop(game: Game) {
     game.display.clear()
     renderMap(game.display, game.level.map)
     game.ecs.update()
-
 
     // if (!playerLoc) {
     //     throw new Error('Player has no location component')
@@ -53,7 +51,7 @@ function main() {
 
     const movementSystem = new MovementSystem()
     game.ecs.addSystem(movementSystem)
-    
+
     window.addEventListener('keydown', (event) =>
         inputSystem.handleInput(event)
     )

@@ -23,7 +23,6 @@ interface GameSettings {
     fovRadius: number
 }
 
-
 class Game {
     display: ROT.Display
     level: Level

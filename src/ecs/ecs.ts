@@ -1,6 +1,6 @@
 // https://maxwellforbes.com/posts/typescript-ecs-implementation/
 
-import { EventBus } from "./eventing"
+import { EventBus } from './eventing'
 
 /**
  * Entity is a unique identifier for an entity in the ECS, used to look up its
@@ -19,16 +19,16 @@ abstract class Component {}
  */
 abstract class System {
     public abstract componentsRequired: Set<Function>
-    
+
     /**
      * update() is called every frame with a set of entities.
-    */
-   public abstract update(entities: Set<Entity>): void
+     */
+    public abstract update(entities: Set<Entity>): void
 
-   public abstract registerEventHandlers(): void
-   
-   public ecs: ECS
-   public eventBus: EventBus
+    public abstract registerEventHandlers(): void
+
+    public ecs: ECS
+    public eventBus: EventBus
 }
 
 type ComponentClass<T extends Component> = new (...args: any[]) => T
