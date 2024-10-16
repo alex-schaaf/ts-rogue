@@ -8,7 +8,6 @@ import { Renderable } from './ecs/components/Renderable'
 
 import { Health } from '@components/Health'
 import { BlockMovement } from '@components/BlockMovement'
-import { IsPlayer } from '@components/IsPlayer'
 import { Position } from '@components/Position'
 import { loop } from '@game/loop'
 import { AiSystem } from '@systems/AiSystem'
@@ -29,7 +28,7 @@ function initSystems(game: Game) {
     const movementSystem = new MovementSystem()
     game.ecs.addSystem(movementSystem)
 
-    const aiSystem = new AiSystem(game.playerEntity)
+    const aiSystem = new AiSystem(game.playerEntity, game.level.map)
     game.ecs.addSystem(aiSystem)
 
     const renderSystem = new EntityRenderSystem(game.display)
