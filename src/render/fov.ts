@@ -1,32 +1,33 @@
 import * as ROT from 'rot-js'
-import { GameMap, XYtoCoords } from '../game/game'
+import { GameMap } from '../game/game'
+import { Tile } from '../game/tile'
 
-function isTransparent(map: GameMap, x: number, y: number) {
-    const coords = XYtoCoords(x, y)
-    if (coords in map) {
-        return map[coords].isTransparent
+function isTransparent(map: GameMap<Tile>, x: number, y: number) {
+    const tile = map.get(x, y)
+    if (tile) {
+        return tile.isTransparent
     }
     return false
 }
 
-function lightPasses(map: GameMap, x: number, y: number): boolean {
+function lightPasses(map: GameMap<Tile>, x: number, y: number): boolean {
     return isTransparent(map, x, y)
 }
 
-function getFovMap(map: GameMap, x: number, y: number, radius: number) {
-    const fovMap: Record<string, boolean> = {}
+function getFovMap(map: GameMap<Tile>, x: number, y: number, radius: number) {
+    const fovMap =  new GameMap<boolean>()
     const fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
         lightPasses(map, x, y)
     )
 
     fov.compute(x, y, radius, (x, y, r, visibility) => {
         if (visibility) {
-            const coord = XYtoCoords(x, y)
-            if (map[coord] === undefined) {
+            const tile = map.get(x, y)
+            if (tile === undefined) {
                 return
             }
-            fovMap[coord] = true
-            map[coord].isExplored = true
+            fovMap.set(x, y, true)
+            tile.isExplored = true
         }
     })
     return fovMap

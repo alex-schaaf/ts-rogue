@@ -1,10 +1,10 @@
 import * as ROT from 'rot-js'
-import { Tile } from '../game/tile'
 import { GameMap } from '../game/game'
+import { Tile } from '../game/tile'
 
 export function renderMap(
     display: ROT.Display,
-    map: GameMap
+    map: GameMap<Tile>
     // fovMap: Record<string, boolean>
 ) {
     function isVisible(x: number, y: number) {

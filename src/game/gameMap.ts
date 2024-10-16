@@ -1,8 +1,6 @@
-import { Tile } from './tile'
-
-class GameMap {
+class GameMap<T> {
     private BIT_LENGTH = 16
-    private map: Map<number, Tile> = new Map()
+    private map: Map<number, T> = new Map()
 
     private packCoords(x: number, y: number): number {
         return (x << this.BIT_LENGTH) | y
@@ -14,11 +12,11 @@ class GameMap {
         return [x, y]
     }
 
-    public get(x: number, y: number): Tile | undefined {
+    public get(x: number, y: number): T | undefined {
         return this.map.get(this.packCoords(x, y))
     }
 
-    public set(x: number, y: number, tile: Tile) {
+    public set(x: number, y: number, tile: T) {
         this.map.set(this.packCoords(x, y), tile)
     }
 

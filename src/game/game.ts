@@ -2,9 +2,10 @@ import * as ROT from 'rot-js'
 import { ECS } from '../lib/ecs'
 import { GameMap } from './gameMap'
 import { generate } from '../generation/algorithms/rooms'
+import { Tile } from './tile'
 
 interface Level {
-    map: GameMap
+    map: GameMap<Tile>
 }
 
 interface GameSettings {

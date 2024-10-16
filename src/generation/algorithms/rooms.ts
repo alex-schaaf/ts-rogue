@@ -1,4 +1,5 @@
 import { GameMap } from '../../game/game'
+import { Tile } from '../../game/tile'
 import { getFloor, getWall } from '../tiles'
 
 interface RectangularRoom {
@@ -59,7 +60,7 @@ function getSimpleTunnel(p1: Point, p2: Point): [number, number][] {
     return tunnel
 }
 
-function paintRoom(map: GameMap, room: RectangularRoom) {
+function paintRoom(map: GameMap<Tile>, room: RectangularRoom) {
     // Fill the room with floor tiles
     getInnerArea(room).forEach(([x, y]) => {
         map.set(x, y, getFloor())
@@ -75,7 +76,7 @@ function paintRoom(map: GameMap, room: RectangularRoom) {
     }
 }
 
-function paintTunnel(map: GameMap, tunnel: [number, number][]) {
+function paintTunnel(map: GameMap<Tile>, tunnel: [number, number][]) {
     // Fill the tunnel with floor tiles
     tunnel.forEach(([x, y]) => {
         map.set(x, y, getFloor())
@@ -106,8 +107,8 @@ function paintTunnel(map: GameMap, tunnel: [number, number][]) {
     })
 }
 
-function generate(width: number, height: number): GameMap {
-    let map = new GameMap()
+function generate(width: number, height: number): GameMap<Tile> {
+    let map = new GameMap<Tile>()
 
     let rooms = [
         createRectangularRoom(3, 27, 10, 8),
