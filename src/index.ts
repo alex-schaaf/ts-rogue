@@ -13,26 +13,10 @@ import { Health } from './ecs/components/Health'
 import { BlockMovement } from './ecs/components/BlockMovement'
 import { IsPlayer } from './ecs/components/IsPlayer'
 import { Position } from './ecs/components/Position'
+import { loop } from './game/loop'
 
 Logger.logLevel = LogLevel.WARN
 
-function loop(game: Game) {
-    game.display.clear()
-    renderMap(game.display, game.level.map)
-    game.ecs.update()
-
-    // if (!playerLoc) {
-    //     throw new Error('Player has no location component')
-    // }
-    // const fovMap = getFovMap(
-    //     game.level.map,
-    //     playerLoc.x,
-    //     playerLoc.y,
-    //     game.settings.fovRadius
-    // )
-
-    requestAnimationFrame(() => loop(game))
-}
 
 function main() {
     const mapWidth = 50
