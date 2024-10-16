@@ -1,8 +1,9 @@
-import { GameMap } from '../../game/game'
-import { BlockMovement } from '../components/BlockMovement'
-import { Position } from '../components/Position'
-import { System } from '../../lib/ecs'
+import { GameMap } from '@lib/gameMap'
+import { BlockMovement } from '@components/BlockMovement'
+import { Position } from '@components/Position'
+import { System } from '@lib/ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
+import { Tile } from '@game/tile'
 
 /**
  * A system that handles collision detection and resolution.
@@ -13,9 +14,9 @@ import { MoveCommand, MoveIntent } from '../events/movement'
  */
 class CollisionSystem extends System {
     componentsRequired = new Set<Function>([Position, BlockMovement])
-    gameMap: GameMap
+    gameMap: GameMap<Tile>
 
-    constructor(gameMap: GameMap) {
+    constructor(gameMap: GameMap<Tile>) {
         super()
         this.gameMap = gameMap
     }
