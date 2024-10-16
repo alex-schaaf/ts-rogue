@@ -155,8 +155,8 @@ class ECS {
     // Internal
     private destroyEntity(entity: Entity): void {
         this.entities.delete(entity)
-        for (const system of this.systems.keys()) {
-            this.entities.delete(entity)
+        for (let entities of this.systems.values()) {
+            entities.delete(entity)
         }
     }
 
