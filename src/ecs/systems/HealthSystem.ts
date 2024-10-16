@@ -1,5 +1,7 @@
 import { Health } from "@components/Health";
+import { Renderable } from "@components/Renderable";
 import { TookDamage } from "@events/combat";
+import { Died } from "@events/death";
 import { System } from "@lib/ecs";
 import { Logger } from "@lib/logger";
 
@@ -17,6 +19,11 @@ class HealthSystem extends System {
         const health = container.get(Health)
 
         health.current -= event.amount
+
+        if (health.current <= 0) {
+            this.ecs.removeEntity(event.entityId)
+            this.eventBus.emit(Died, new Died(event.entityId))
+        }
     }
 }
 
