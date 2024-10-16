@@ -1,4 +1,4 @@
-import { EntityEvent } from '../../lib/eventing'
+import { EntityEvent } from '@lib/eventing'
 
 class MoveIntent extends EntityEvent {
     constructor(

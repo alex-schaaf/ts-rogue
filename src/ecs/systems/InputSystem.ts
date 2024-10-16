@@ -2,6 +2,7 @@ import { Logger } from '../../lib/logger'
 import { IsPlayer } from '../components/IsPlayer'
 import { Entity, System } from '../../lib/ecs'
 import { MoveIntent } from '../events/movement'
+import { PlayerTookTurn } from '@events/turn'
 
 class InputSystem extends System {
     componentsRequired = new Set<Function>([IsPlayer])
@@ -47,6 +48,7 @@ class InputSystem extends System {
                 )
                 break
         }
+        this.eventBus.emit(PlayerTookTurn, new PlayerTookTurn(this.player))
     }
 }
 
