@@ -4,6 +4,13 @@ import { Position } from '../components/Position'
 import { System } from '../ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 
+/**
+ * A system that handles collision detection and resolution.
+ *
+ * This system listens for MoveIntent events and checks if the movement is
+ * blocked by the game map or other entities. If the movement is not blocked, a
+ * MoveCommand event is emitted.
+ */
 class CollisionSystem extends System {
     componentsRequired = new Set<Function>([Position, BlockMovement])
     gameMap: GameMap
