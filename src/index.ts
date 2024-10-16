@@ -17,16 +17,22 @@ import { loop } from './game/loop'
 
 Logger.logLevel = LogLevel.WARN
 
+function initSystems(game: Game) {
+    const collisionSystem = new CollisionSystem(game.level.map)
+    game.ecs.addSystem(collisionSystem)
+
+    const movementSystem = new MovementSystem()
+    game.ecs.addSystem(movementSystem)
+
+    const renderSystem = new EntityRenderSystem(game.display)
+    game.ecs.addSystem(renderSystem)
+}
 
 function main() {
     const mapWidth = 50
     const mapHeight = 40
 
     const game = new Game(mapWidth, mapHeight)
-    game.level.map = generate(mapWidth, mapHeight)
-
-    const renderSystem = new EntityRenderSystem(game.display)
-    game.ecs.addSystem(renderSystem)
 
     const player = game.ecs.addEntity()
     game.ecs.addComponent(player, new IsPlayer())
@@ -44,15 +50,10 @@ function main() {
     const inputSystem = new InputSystem(player)
     game.ecs.addSystem(inputSystem)
 
-    const collisionSystem = new CollisionSystem(game.level.map)
-    game.ecs.addSystem(collisionSystem)
-
-    const movementSystem = new MovementSystem()
-    game.ecs.addSystem(movementSystem)
-
     window.addEventListener('keydown', (event) =>
         inputSystem.handleInput(event)
     )
+    initSystems(game)
 
     requestAnimationFrame(() => loop(game))
 }

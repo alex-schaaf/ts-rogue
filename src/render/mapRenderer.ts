@@ -7,22 +7,23 @@ export function renderMap(
     map: GameMap
     // fovMap: Record<string, boolean>
 ) {
-    function isVisible(coord: string) {
+    function isVisible(x: number, y: number) {
         // return coord in fovMap
         return true
     }
 
-    function isExplored(coord: string) {
+    function isExplored(x: number, y: number) {
         return true
-        return map[coord].isExplored === true
+        return map.get(x, y)?.isExplored === true
     }
 
-    for (let coord in map) {
-        let [x, y] = coord.split(',').map(Number)
-        let tile = map[coord]
-        if (isVisible(coord)) {
+    
+
+    for (const [x, y] of map.getCoords()) {
+        let tile = map.get(x, y)!
+        if (isVisible(x, y)) {
             display.draw(x, y, tile.char, tile.colorFg, tile.colorBg)
-        } else if (isExplored(coord)) {
+        } else if (isExplored(x, y)) {
             display.draw(
                 x,
                 y,

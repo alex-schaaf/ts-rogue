@@ -1,6 +1,7 @@
 import * as ROT from 'rot-js'
 import { ECS } from '../lib/ecs'
 import { GameMap } from './gameMap'
+import { generate } from '../generation/algorithms/rooms'
 
 interface Level {
     map: GameMap
@@ -33,8 +34,9 @@ class Game {
         }
         mapElement.appendChild(displayContainer)
 
+
         this.level = {
-            map: new GameMap(),
+            map: generate(width, height),
         }
 
         this.settings = {
