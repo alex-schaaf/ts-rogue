@@ -8,7 +8,7 @@
             "@systems/*": ["src/ecs/systems/*"],
             "@events/*": ["src/ecs/events/*"],
         },
-        "lib": ["DOM", "ES6"],
+        "lib": ["DOM", "ES2023"],
         "downlevelIteration": true,
     }
 }
