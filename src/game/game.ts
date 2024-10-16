@@ -3,6 +3,11 @@ import { ECS } from '@lib/ecs'
 import { GameMap } from '@lib/gameMap'
 import { generate } from '../generation/algorithms/rooms'
 import { Tile } from './tile'
+import { IsPlayer } from '@components/IsPlayer'
+import { Position } from '@components/Position'
+import { BlockMovement } from '@components/BlockMovement'
+import { Health } from '@components/Health'
+import { Renderable } from '@components/Renderable'
 
 interface Level {
     map: GameMap<Tile>
@@ -18,6 +23,7 @@ class Game {
     settings: GameSettings
 
     public ecs = new ECS()
+    public playerEntity: number
 
     constructor(width: number, height: number) {
         this.display = new ROT.Display({
@@ -42,6 +48,14 @@ class Game {
         this.settings = {
             fovRadius: 6,
         }
+
+        const player = this.ecs.addEntity()
+        this.playerEntity = player
+        this.ecs.addComponent(player, new IsPlayer())
+        this.ecs.addComponent(player, new Position(25, 20))
+        this.ecs.addComponent(player, new Renderable('@', '#de935f', '#000'))
+        this.ecs.addComponent(player, new BlockMovement())
+        this.ecs.addComponent(player, new Health(10, 10))
 
         console.debug('Game initialized')
     }

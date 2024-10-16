@@ -42,13 +42,6 @@ function main() {
 
     const game = new Game(mapWidth, mapHeight)
 
-    const player = game.ecs.addEntity()
-    game.ecs.addComponent(player, new IsPlayer())
-    game.ecs.addComponent(player, new Position(25, 20))
-    game.ecs.addComponent(player, new Renderable('@', '#de935f', '#000'))
-    game.ecs.addComponent(player, new BlockMovement())
-    game.ecs.addComponent(player, new Health(10, 10))
-
     const rat = game.ecs.addEntity()
     game.ecs.addComponent(rat, new Position(29, 20))
     game.ecs.addComponent(rat, new Renderable('r', '#CE422B', '#000'))
@@ -56,7 +49,7 @@ function main() {
     game.ecs.addComponent(rat, new Health(2, 2))
     game.ecs.addComponent(rat, new IsEnemy())
 
-    const inputSystem = new InputSystem(player)
+    const inputSystem = new InputSystem(game.playerEntity)
     game.ecs.addSystem(inputSystem)
 
     window.addEventListener('keydown', (event) =>
