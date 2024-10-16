@@ -1,3 +1,5 @@
+import { EventLogger } from "./logger"
+
 abstract class EntityEvent {
     public abstract entityId: number
 }
@@ -21,6 +23,7 @@ class EventBus {
     }
 
     public emit(eventType: EventClass, event: EntityEvent): void {
+        EventLogger.debug({ eventType: eventType.name, ...event })
         this.eventHandlers.get(eventType)?.forEach((handler) => {
             handler(event)
         })

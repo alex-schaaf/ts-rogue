@@ -20,28 +20,24 @@ class InputSystem extends System {
     public handleInput(event: KeyboardEvent): void {
         switch (event.key) {
             case 'ArrowUp':
-                Logger.debug('InputSystem.handleInput: ArrowUp')
                 this.eventBus.emit(
                     MoveIntent,
                     new MoveIntent(this.player, 0, -1)
                 )
                 break
             case 'ArrowDown':
-                Logger.debug('InputSystem.handleInput: ArrowDown')
                 this.eventBus.emit(
                     MoveIntent,
                     new MoveIntent(this.player, 0, 1)
                 )
                 break
             case 'ArrowLeft':
-                Logger.debug('InputSystem.handleInput: ArrowLeft')
                 this.eventBus.emit(
                     MoveIntent,
                     new MoveIntent(this.player, -1, 0)
                 )
                 break
             case 'ArrowRight':
-                Logger.debug('InputSystem.handleInput: ArrowRight')
                 this.eventBus.emit(
                     MoveIntent,
                     new MoveIntent(this.player, 1, 0)

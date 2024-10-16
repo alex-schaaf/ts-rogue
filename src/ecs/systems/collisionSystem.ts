@@ -5,7 +5,7 @@ import { Entity, System } from '@lib/ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 import { Tile } from '@game/tile'
 import { PhysicalAttack } from '@events/combat'
-import { Logger } from '@lib/logger'
+import { EventLogger, Logger } from '@lib/logger'
 
 /**
  * A system that handles collision detection and resolution.
@@ -26,7 +26,6 @@ class CollisionSystem extends System {
     public update(): void {}
 
     public registerEventHandlers(): void {
-        Logger.debug('CollisionSystem: Registering event handlers')
         this.eventBus.on(MoveIntent, this.handleMoveIntent.bind(this))
     }
 
@@ -43,7 +42,6 @@ class CollisionSystem extends System {
 
         const blockingEntity = this.isBlockedByEntity(targetX, targetY)
         if (blockingEntity !== null) {
-            Logger.debug(`CollisionSystem: Blocked by entity ${blockingEntity}`)
             this.eventBus.emit(
                 PhysicalAttack, new PhysicalAttack(event.entityId, blockingEntity)
             )

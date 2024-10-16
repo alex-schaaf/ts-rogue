@@ -9,12 +9,10 @@ class HealthSystem extends System {
     public update(): void {}
 
     public registerEventHandlers(): void {
-        Logger.debug('HealthSystem: Registering event handlers')
         this.eventBus.on(TookDamage, this.handleTookDamage.bind(this))
     }
 
     private handleTookDamage(event: TookDamage): void {
-        Logger.debug(`HealthSystem: TookDamage ${JSON.stringify(event)}`)
         const container = this.ecs.getComponents(event.entityId)
         const health = container.get(Health)
 

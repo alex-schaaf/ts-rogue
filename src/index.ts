@@ -4,7 +4,6 @@ import { InputSystem } from '@systems/InputSystem'
 import { EntityRenderSystem } from '@systems/EntityRenderSystem'
 import { MovementSystem } from '@systems/MovementSystem'
 import { CollisionSystem } from '@systems/CollisionSystem'
-import { Logger, LogLevel } from './lib/logger'
 import { Renderable } from './ecs/components/Renderable'
 
 import { Health } from '@components/Health'
@@ -16,8 +15,6 @@ import { AiSystem } from '@systems/AiSystem'
 import { IsEnemy } from '@components/IsEnemy'
 import { PhysicalCombatSystem } from '@systems/PhysicalCombatSystem'
 import { HealthSystem } from '@systems/HealthSystem'
-
-Logger.logLevel = LogLevel.DEBUG
 
 function initSystems(game: Game) {
     const collisionSystem = new CollisionSystem(game.level.map)

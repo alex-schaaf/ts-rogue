@@ -13,12 +13,10 @@ class PhysicalCombatSystem extends System {
     public update() {}
 
     public registerEventHandlers(): void {
-        Logger.debug('PhysicalCombatSystem: Registering event handlers')
         this.eventBus.on(PhysicalAttack, this.handlePhysicalAttack.bind(this))
     }
 
     private handlePhysicalAttack(event: PhysicalAttack): void {
-        Logger.debug(`PhysicalCombatSystem: PhysicalAttack ${event.entityId} -> ${event.targetId}`)
         this.eventBus.emit(TookDamage, new TookDamage(event.targetId, 1))
     }
 }
