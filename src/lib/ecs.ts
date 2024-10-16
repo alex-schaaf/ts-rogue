@@ -1,6 +1,6 @@
 // https://maxwellforbes.com/posts/typescript-ecs-implementation/
 
-import { EventBus } from '../ecs/eventing'
+import { EventBus } from './eventing'
 
 /**
  * Entity is a unique identifier for an entity in the ECS, used to look up its
