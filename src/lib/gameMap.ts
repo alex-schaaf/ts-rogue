@@ -24,7 +24,7 @@ class GameMap<T> {
         delete this.map[this.packCoords(x, y)]
     }
 
-    public *getCoords() {
+    public *getCoords(): Generator<[number, number]> {
         for (const packed of this.map.keys()) {
             yield this.unpackCoords(packed)
         }

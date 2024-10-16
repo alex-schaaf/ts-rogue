@@ -1,6 +1,6 @@
 import * as ROT from 'rot-js'
-import { GameMap } from '../game/game'
-import { Tile } from '../game/tile'
+import { GameMap } from '@game/game'
+import { Tile } from '@game/tile'
 
 export function renderMap(
     display: ROT.Display,
@@ -16,8 +16,6 @@ export function renderMap(
         return true
         return map.get(x, y)?.isExplored === true
     }
-
-    
 
     for (const [x, y] of map.getCoords()) {
         let tile = map.get(x, y)!

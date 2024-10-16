@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".", // This is required to use the "paths" option
+        "paths": {
+            "@lib/*": ["src/lib/*"],
+            "@game/*": ["src/game/*"],
+            "@components/*": ["src/ecs/components/*"],
+            "@systems/*": ["src/ecs/systems/*"],
+            "@events/*": ["src/ecs/events/*"],
+        },
+        "lib": ["ES2023"],
+        "downlevelIteration": true,
+    }
+}

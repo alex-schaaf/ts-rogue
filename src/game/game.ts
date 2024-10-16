@@ -1,6 +1,6 @@
 import * as ROT from 'rot-js'
-import { ECS } from '../lib/ecs'
-import { GameMap } from './gameMap'
+import { ECS } from '@lib/ecs'
+import { GameMap } from '@lib/gameMap'
 import { generate } from '../generation/algorithms/rooms'
 import { Tile } from './tile'
 
