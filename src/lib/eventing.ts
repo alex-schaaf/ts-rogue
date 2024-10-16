@@ -1,4 +1,4 @@
-import { EventLogger } from "./logger"
+import { EventLogger } from './logger'
 
 abstract class EntityEvent {
     public abstract entityId: number

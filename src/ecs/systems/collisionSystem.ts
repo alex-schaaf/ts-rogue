@@ -43,7 +43,8 @@ class CollisionSystem extends System {
         const blockingEntity = this.isBlockedByEntity(targetX, targetY)
         if (blockingEntity !== null) {
             this.eventBus.emit(
-                PhysicalAttack, new PhysicalAttack(event.entityId, blockingEntity)
+                PhysicalAttack,
+                new PhysicalAttack(event.entityId, blockingEntity)
             )
             return
         }

@@ -15,7 +15,7 @@ function lightPasses(map: GameMap<Tile>, x: number, y: number): boolean {
 }
 
 function getFovMap(map: GameMap<Tile>, x: number, y: number, radius: number) {
-    const fovMap =  new GameMap<boolean>()
+    const fovMap = new GameMap<boolean>()
     const fov = new ROT.FOV.PreciseShadowcasting((x, y) =>
         lightPasses(map, x, y)
     )

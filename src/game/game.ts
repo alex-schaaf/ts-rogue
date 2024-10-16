@@ -35,7 +35,6 @@ class Game {
         }
         mapElement.appendChild(displayContainer)
 
-
         this.level = {
             map: generate(width, height),
         }

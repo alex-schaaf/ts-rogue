@@ -1,5 +1,5 @@
-import { renderMap } from "../render/mapRenderer"
-import { Game } from "./game"
+import { renderMap } from '../render/mapRenderer'
+import { Game } from './game'
 
 function loop(game: Game) {
     game.display.clear()

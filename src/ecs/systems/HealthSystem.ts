@@ -1,9 +1,7 @@
-import { Health } from "@components/Health";
-import { Renderable } from "@components/Renderable";
-import { TookDamage } from "@events/combat";
-import { Died } from "@events/death";
-import { System } from "@lib/ecs";
-import { Logger } from "@lib/logger";
+import { Health } from '@components/Health'
+import { TookDamage } from '@events/combat'
+import { Died } from '@events/death'
+import { System } from '@lib/ecs'
 
 class HealthSystem extends System {
     componentsRequired = new Set<Function>([Health])
