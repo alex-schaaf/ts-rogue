@@ -1,4 +1,4 @@
-import { Component } from "../../lib/ecs";
+import { Component } from "@lib/ecs";
 
 export class Renderable extends Component {
     constructor(

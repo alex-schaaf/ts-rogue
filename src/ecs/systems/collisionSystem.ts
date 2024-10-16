@@ -1,9 +1,11 @@
 import { GameMap } from '@lib/gameMap'
 import { BlockMovement } from '@components/BlockMovement'
 import { Position } from '@components/Position'
-import { System } from '@lib/ecs'
+import { Entity, System } from '@lib/ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 import { Tile } from '@game/tile'
+import { PhysicalAttack } from '@events/combat'
+import { Logger } from '@lib/logger'
 
 /**
  * A system that handles collision detection and resolution.
@@ -24,6 +26,7 @@ class CollisionSystem extends System {
     public update(): void {}
 
     public registerEventHandlers(): void {
+        Logger.debug('CollisionSystem: Registering event handlers')
         this.eventBus.on(MoveIntent, this.handleMoveIntent.bind(this))
     }
 
@@ -37,8 +40,14 @@ class CollisionSystem extends System {
         if (this.isBlockedByMap(targetX, targetY)) {
             return // Movement is blocked
         }
-        if (this.isBlockedByEntity(targetX, targetY)) {
-            return // Movement is blocked
+
+        const blockingEntity = this.isBlockedByEntity(targetX, targetY)
+        if (blockingEntity !== null) {
+            Logger.debug(`CollisionSystem: Blocked by entity ${blockingEntity}`)
+            this.eventBus.emit(
+                PhysicalAttack, new PhysicalAttack(event.entityId, blockingEntity)
+            )
+            return
         }
 
         this.eventBus.emit(
@@ -47,16 +56,16 @@ class CollisionSystem extends System {
         )
     }
 
-    private isBlockedByEntity(x: number, y: number): boolean {
+    private isBlockedByEntity(x: number, y: number): Entity | null {
         for (const entity of this.ecs.getEntitiesForSystem(this)) {
             const container = this.ecs.getComponents(entity)
             const location = container.get(Position)
 
             if (location.x === x && location.y === y) {
-                return true
+                return entity
             }
         }
-        return false
+        return null
     }
 
     private isBlockedByMap(x: number, y: number): boolean {

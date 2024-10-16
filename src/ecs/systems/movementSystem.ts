@@ -1,4 +1,4 @@
-import { Entity, System } from '../../lib/ecs'
+import { Entity, System } from '@lib/ecs'
 import { MoveCommand } from '../events/movement'
 import { Position } from '../components/Position'
 

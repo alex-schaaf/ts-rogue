@@ -1,9 +1,9 @@
 import { Game } from './game/game'
 
-import { InputSystem } from './ecs/systems/InputSystem'
-import { EntityRenderSystem } from './ecs/systems/EntityRenderSystem'
-import { MovementSystem } from './ecs/systems/MovementSystem'
-import { CollisionSystem } from './ecs/systems/CollisionSystem'
+import { InputSystem } from '@systems/InputSystem'
+import { EntityRenderSystem } from '@systems/EntityRenderSystem'
+import { MovementSystem } from '@systems/MovementSystem'
+import { CollisionSystem } from '@systems/CollisionSystem'
 import { Logger, LogLevel } from './lib/logger'
 import { Renderable } from './ecs/components/Renderable'
 
@@ -14,12 +14,20 @@ import { Position } from '@components/Position'
 import { loop } from '@game/loop'
 import { AiSystem } from '@systems/AiSystem'
 import { IsEnemy } from '@components/IsEnemy'
+import { PhysicalCombatSystem } from '@systems/PhysicalCombatSystem'
+import { HealthSystem } from '@systems/HealthSystem'
 
-Logger.logLevel = LogLevel.WARN
+Logger.logLevel = LogLevel.DEBUG
 
 function initSystems(game: Game) {
     const collisionSystem = new CollisionSystem(game.level.map)
     game.ecs.addSystem(collisionSystem)
+
+    const physicalCombatSystem = new PhysicalCombatSystem()
+    game.ecs.addSystem(physicalCombatSystem)
+
+    const healthSystem = new HealthSystem()
+    game.ecs.addSystem(healthSystem)
 
     const movementSystem = new MovementSystem()
     game.ecs.addSystem(movementSystem)

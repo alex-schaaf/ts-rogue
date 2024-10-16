@@ -14,7 +14,7 @@ export function renderMap(
 
     function isExplored(x: number, y: number) {
         return true
-        return map.get(x, y)?.isExplored === true
+        // return map.get(x, y)?.isExplored === true
     }
 
     for (const [x, y] of map.getCoords()) {
