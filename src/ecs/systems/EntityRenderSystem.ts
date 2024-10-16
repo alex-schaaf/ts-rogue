@@ -1,6 +1,6 @@
 import { Display } from 'rot-js'
 
-import { Entity, System } from '../ecs'
+import { Entity, System } from '../../lib/ecs'
 import { Renderable } from '../components/Renderable'
 import { Position } from '../components/Position'
 

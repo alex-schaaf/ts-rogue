@@ -1,5 +1,5 @@
 import * as ROT from 'rot-js'
-import { ECS } from '../ecs/ecs'
+import { ECS } from '../lib/ecs'
 import { GameMap } from './gameMap'
 
 interface Level {

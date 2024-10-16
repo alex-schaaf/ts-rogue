@@ -1,6 +1,6 @@
 import { Logger } from '../../lib/logger'
 import { IsPlayer } from '../components/IsPlayer'
-import { Entity, System } from '../ecs'
+import { Entity, System } from '../../lib/ecs'
 import { MoveIntent } from '../events/movement'
 
 class InputSystem extends System {

@@ -1,7 +1,7 @@
 import { GameMap } from '../../game/game'
 import { BlockMovement } from '../components/BlockMovement'
 import { Position } from '../components/Position'
-import { System } from '../ecs'
+import { System } from '../../lib/ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 
 /**
