@@ -5,6 +5,12 @@ import { Entity, System } from '@lib/ecs'
 
 class AiSystem extends System {
     componentsRequired = new Set<Function>([IsEnemy])
+    private playerEntity: Entity
+
+    constructor(playerEntity: Entity) {
+        super()
+        this.playerEntity = playerEntity
+    }
 
     public update(entities: Set<Entity>): void {}
 

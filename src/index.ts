@@ -29,7 +29,7 @@ function initSystems(game: Game) {
     const movementSystem = new MovementSystem()
     game.ecs.addSystem(movementSystem)
 
-    const aiSystem = new AiSystem()
+    const aiSystem = new AiSystem(game.playerEntity)
     game.ecs.addSystem(aiSystem)
 
     const renderSystem = new EntityRenderSystem(game.display)
