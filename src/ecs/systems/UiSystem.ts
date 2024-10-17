@@ -1,6 +1,5 @@
 import { Health } from '@components/Health'
 import { Name } from '@components/Name'
-import { PhysicalAttack, TookDamage } from '@events/combat'
 import { UIAttackUpdate, UIHealthUpdate } from '@events/ui'
 import { Entity, System } from '@lib/ecs'
 
