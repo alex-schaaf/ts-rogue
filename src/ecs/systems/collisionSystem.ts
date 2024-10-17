@@ -1,11 +1,11 @@
 import { GameMap } from '@lib/gameMap'
 import { BlockMovement } from '@components/BlockMovement'
 import { Position } from '@components/Position'
-import { Entity, System } from '@lib/ecs'
+import { ComponentContainer, Entity, System } from '@lib/ecs'
 import { MoveCommand, MoveIntent } from '../events/movement'
 import { Tile } from '@game/tile'
 import { PhysicalAttack } from '@events/combat'
-import { EventLogger, Logger } from '@lib/logger'
+import { Faction } from '@components/Faction'
 
 /**
  * A system that handles collision detection and resolution.
@@ -30,8 +30,8 @@ class CollisionSystem extends System {
     }
 
     private handleMoveIntent(event: MoveIntent): void {
-        const container = this.ecs.getComponents(event.entityId)
-        const location = container.get(Position)
+        const movingComponents = this.ecs.getComponents(event.entityId)
+        const location = movingComponents.get(Position)
 
         const targetX = location.x + event.dx
         const targetY = location.y + event.dy
@@ -41,11 +41,16 @@ class CollisionSystem extends System {
         }
 
         const blockingEntity = this.isBlockedByEntity(targetX, targetY)
+
         if (blockingEntity !== null) {
-            this.eventBus.emit(
-                PhysicalAttack,
-                new PhysicalAttack(event.entityId, blockingEntity)
-            )
+            const blockingComponents = this.ecs.getComponents(blockingEntity)
+
+            if (this.isBlockedByEnemy(movingComponents, blockingComponents)) {
+                this.eventBus.emit(
+                    PhysicalAttack,
+                    new PhysicalAttack(event.entityId, blockingEntity)
+                )
+            }
             return
         }
 
@@ -70,6 +75,20 @@ class CollisionSystem extends System {
     private isBlockedByMap(x: number, y: number): boolean {
         const tile = this.gameMap.get(x, y)
         return !tile.isWalkable
+    }
+
+    private isBlockedByEnemy(
+        movingComponents: ComponentContainer,
+        blockingComponents: ComponentContainer
+    ): boolean {
+        const entityFaction = movingComponents.get(Faction)
+        const blockingFaction = blockingComponents.get(Faction)
+
+        if (!entityFaction || !blockingFaction) {
+            return false
+        }
+
+        return entityFaction.name !== blockingFaction.name
     }
 }
 

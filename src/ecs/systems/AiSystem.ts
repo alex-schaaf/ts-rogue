@@ -1,4 +1,4 @@
-import { IsEnemy } from '@components/IsEnemy'
+import { AiControlled } from '@components/AiControlled'
 import { Position } from '@components/Position'
 import { MoveIntent } from '@events/movement'
 import { PlayerTookTurn } from '@events/turn'
@@ -8,7 +8,7 @@ import { GameMap } from '@lib/gameMap'
 import * as ROT from 'rot-js'
 
 class AiSystem extends System {
-    componentsRequired = new Set<Function>([IsEnemy, Position])
+    componentsRequired = new Set<Function>([AiControlled])
     private playerEntity: Entity
     public gameMap: GameMap<Tile>
 
@@ -32,6 +32,9 @@ class AiSystem extends System {
         this.ecs.getEntitiesForSystem(this).forEach((entity) => {
             const container = this.ecs.getComponents(entity)
             const position = container.get(Position)
+            if (!position) {
+                return
+            }
 
             const playerComponents = this.ecs.getComponents(this.playerEntity)
             const playerPosition = playerComponents.get(Position)

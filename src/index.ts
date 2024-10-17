@@ -14,6 +14,8 @@ import { AiSystem } from '@systems/AiSystem'
 import { IsEnemy } from '@components/IsEnemy'
 import { PhysicalCombatSystem } from '@systems/PhysicalCombatSystem'
 import { HealthSystem } from '@systems/HealthSystem'
+import { Faction, FactionName } from '@components/Faction'
+import { AiControlled } from '@components/AiControlled'
 
 function initSystems(game: Game) {
     const collisionSystem = new CollisionSystem(game.level.map)
@@ -46,7 +48,8 @@ function main() {
     game.ecs.addComponent(rat, new Renderable('r', '#CE422B', '#000'))
     game.ecs.addComponent(rat, new BlockMovement())
     game.ecs.addComponent(rat, new Health(2, 2))
-    game.ecs.addComponent(rat, new IsEnemy())
+    game.ecs.addComponent(rat, new Faction(FactionName.Enemy))
+    game.ecs.addComponent(rat, new AiControlled())
 
     const inputSystem = new InputSystem(game.playerEntity)
     game.ecs.addSystem(inputSystem)
