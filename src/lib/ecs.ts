@@ -87,12 +87,11 @@ class ECS {
         return this.systems.get(system) || new Set()
     }
 
-    /**
-     * Store entities that are to be destroyed at the end of the frame. This way
-     * we avoid removing entities that might still be processed by a system.
-     */
-    public removeEntity(entity: Entity): void {
-        this.entitiesToDestroy.push(entity)
+    public destroyEntity(entity: Entity): void {
+        this.entities.delete(entity)
+        for (let entities of this.systems.values()) {
+            entities.delete(entity)
+        }
     }
 
     // API: Components
@@ -142,24 +141,9 @@ class ECS {
         for (const [system, entities] of this.systems.entries()) {
             system.update(entities)
         }
-
-        // Remove entities that were marked for destruction during the update.
-        while (this.entitiesToDestroy.length > 0) {
-            const entity = this.entitiesToDestroy.pop()
-            if (entity !== undefined) {
-                this.destroyEntity(entity)
-            }
-        }
     }
 
     // Internal
-    private destroyEntity(entity: Entity): void {
-        this.entities.delete(entity)
-        for (let entities of this.systems.values()) {
-            entities.delete(entity)
-        }
-    }
-
     private checkE(entity: Entity): void {
         for (const system of this.systems.keys()) {
             this.checkES(entity, system)

@@ -22,7 +22,7 @@ class HealthSystem extends System {
         this.eventBus.emit(HealthUpdate, new HealthUpdate(event.entityId, health.current, health.max))
 
         if (health.current <= 0) {
-            this.ecs.removeEntity(event.entityId)
+            this.ecs.destroyEntity(event.entityId)
             this.eventBus.emit(Died, new Died(event.entityId))
         }
     }
