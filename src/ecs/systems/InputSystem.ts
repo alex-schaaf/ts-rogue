@@ -11,6 +11,10 @@ class InputSystem extends System {
     constructor(player: Entity) {
         super()
         this.player = player
+
+        window.addEventListener('keydown', (event) =>
+            this.handleInput(event)
+        )
     }
 
     public update(entities: Set<Entity>): void {}
