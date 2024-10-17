@@ -1,6 +1,7 @@
 import { Health } from '@components/Health'
 import { TookDamage } from '@events/combat'
 import { Died } from '@events/death'
+import { HealthUpdate } from '@events/ui'
 import { System } from '@lib/ecs'
 
 class HealthSystem extends System {
@@ -17,6 +18,8 @@ class HealthSystem extends System {
         const health = container.get(Health)
 
         health.current -= event.amount
+
+        this.eventBus.emit(HealthUpdate, new HealthUpdate(event.entityId, health.current, health.max))
 
         if (health.current <= 0) {
             this.ecs.removeEntity(event.entityId)

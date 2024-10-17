@@ -16,6 +16,7 @@ import { PhysicalCombatSystem } from '@systems/PhysicalCombatSystem'
 import { HealthSystem } from '@systems/HealthSystem'
 import { Faction, FactionName } from '@components/Faction'
 import { AiControlled } from '@components/AiControlled'
+import { UiSystem } from '@systems/UiSystem'
 
 function initSystems(game: Game) {
     const collisionSystem = new CollisionSystem(game.level.map)
@@ -35,6 +36,9 @@ function initSystems(game: Game) {
 
     const renderSystem = new EntityRenderSystem(game.display)
     game.ecs.addSystem(renderSystem)
+
+    const uiSystem = new UiSystem(game.playerEntity)
+    game.ecs.addSystem(uiSystem)
 }
 
 function main() {
