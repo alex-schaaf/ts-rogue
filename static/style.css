@@ -25,3 +25,11 @@ progress[value] {
 #healthBar::-webkit-progress-value {
     background: #ff0000;
 }
+
+.log-line {
+    font-size: 14px;
+}
+
+.text-danger {
+    color: #990000;
+}

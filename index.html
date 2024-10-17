@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -7,12 +7,21 @@
         <link rel="stylesheet" href="static/style.css" />
     </head>
     <body>
-        <div>Level 1</div>
-        <div id="map"></div>
-        <div id="healthDisplay">
-            <div id="healthTitle">Health</div>
-            <progress id="healthBar" value="10" max="10"></progress>
-            <span id="healthCurrent">10</span> / <span id="healthMax">10</span>
+        <div style="display: flex; gap: 1rem;">
+            <div>
+                <div>Level 1</div>
+                <div id="map"></div>
+                <div id="healthDisplay">
+                    <div id="healthTitle">Health</div>
+                    <progress id="healthBar" value="10" max="10"></progress>
+                    <span id="healthCurrent">10</span> /
+                    <span id="healthMax">10</span>
+                </div>
+            </div>
+            <div>
+                <div>Log</div>
+                <div id="log"></div>
+            </div>
         </div>
         <script src="dist/index.js"></script>
     </body>

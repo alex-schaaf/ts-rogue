@@ -87,11 +87,12 @@ class ECS {
         return this.systems.get(system) || new Set()
     }
 
-    public destroyEntity(entity: Entity): void {
-        this.entities.delete(entity)
-        for (let entities of this.systems.values()) {
-            entities.delete(entity)
-        }
+    public removeEntity(entity: Entity): void {
+        this.entitiesToDestroy.push(entity)
+    }
+
+    public isEntityDead(entity: Entity): boolean {
+        return this.entitiesToDestroy.includes(entity)
     }
 
     // API: Components
@@ -141,9 +142,21 @@ class ECS {
         for (const [system, entities] of this.systems.entries()) {
             system.update(entities)
         }
+
+        // Destroy entities.
+        for (const entity of this.entitiesToDestroy) {
+            this.destroyEntity(entity)
+        }
     }
 
     // Internal
+    private destroyEntity(entity: Entity): void {
+        this.entities.delete(entity)
+        for (let entities of this.systems.values()) {
+            entities.delete(entity)
+        }
+    }
+
     private checkE(entity: Entity): void {
         for (const system of this.systems.keys()) {
             this.checkES(entity, system)

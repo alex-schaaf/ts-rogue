@@ -1,11 +1,9 @@
-import { Game } from './game/game'
-
+import { Game } from '@game/game'
 import { InputSystem } from '@systems/InputSystem'
 import { EntityRenderSystem } from '@systems/EntityRenderSystem'
 import { MovementSystem } from '@systems/MovementSystem'
 import { CollisionSystem } from '@systems/CollisionSystem'
 import { Renderable } from './ecs/components/Renderable'
-
 import { Health } from '@components/Health'
 import { BlockMovement } from '@components/BlockMovement'
 import { Position } from '@components/Position'
@@ -16,10 +14,14 @@ import { HealthSystem } from '@systems/HealthSystem'
 import { Faction, FactionName } from '@components/Faction'
 import { AiControlled } from '@components/AiControlled'
 import { UiSystem } from '@systems/UiSystem'
+import { Name } from '@components/Name'
 
 function initSystems(game: Game) {
     const inputSystem = new InputSystem(game.playerEntity)
     game.ecs.addSystem(inputSystem)
+
+    const aiSystem = new AiSystem(game.playerEntity, game.level.map)
+    game.ecs.addSystem(aiSystem)
 
     const collisionSystem = new CollisionSystem(game.level.map)
     game.ecs.addSystem(collisionSystem)
@@ -32,9 +34,6 @@ function initSystems(game: Game) {
 
     const movementSystem = new MovementSystem()
     game.ecs.addSystem(movementSystem)
-
-    const aiSystem = new AiSystem(game.playerEntity, game.level.map)
-    game.ecs.addSystem(aiSystem)
 
     const renderSystem = new EntityRenderSystem(game.display)
     game.ecs.addSystem(renderSystem)
@@ -56,6 +55,7 @@ function main() {
     game.ecs.addComponent(rat, new Health(2, 2))
     game.ecs.addComponent(rat, new Faction(FactionName.Enemy))
     game.ecs.addComponent(rat, new AiControlled())
+    game.ecs.addComponent(rat, new Name("Rat"))
 
     initSystems(game)
 

@@ -1,7 +1,7 @@
 import { Health } from '@components/Health'
 import { TookDamage } from '@events/combat'
 import { Died } from '@events/death'
-import { HealthUpdate } from '@events/ui'
+import { UIHealthUpdate } from '@events/ui'
 import { System } from '@lib/ecs'
 
 class HealthSystem extends System {
@@ -19,10 +19,10 @@ class HealthSystem extends System {
 
         health.current -= event.amount
 
-        this.eventBus.emit(HealthUpdate, new HealthUpdate(event.entityId, health.current, health.max))
+        this.eventBus.emit(UIHealthUpdate, new UIHealthUpdate(event.entityId, health.current, health.max))
 
         if (health.current <= 0) {
-            this.ecs.destroyEntity(event.entityId)
+            this.ecs.removeEntity(event.entityId)
             this.eventBus.emit(Died, new Died(event.entityId))
         }
     }

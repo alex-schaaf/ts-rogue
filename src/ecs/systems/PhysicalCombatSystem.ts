@@ -1,5 +1,6 @@
 import { Health } from '@components/Health'
 import { PhysicalAttack, TookDamage } from '@events/combat'
+import { UIAttackUpdate } from '@events/ui'
 import { System } from '@lib/ecs'
 import { Logger } from '@lib/logger'
 
@@ -17,7 +18,9 @@ class PhysicalCombatSystem extends System {
     }
 
     private handlePhysicalAttack(event: PhysicalAttack): void {
-        this.eventBus.emit(TookDamage, new TookDamage(event.targetId, 1))
+        const damage = 1
+        this.eventBus.emit(TookDamage, new TookDamage(event.targetId, damage))
+        this.eventBus.emit(UIAttackUpdate, new UIAttackUpdate(event.entityId, event.targetId, damage))
     }
 }
 

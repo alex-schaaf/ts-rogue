@@ -9,6 +9,7 @@ import { BlockMovement } from '@components/BlockMovement'
 import { Health } from '@components/Health'
 import { Renderable } from '@components/Renderable'
 import { Faction, FactionName } from '@components/Faction'
+import { Name } from '@components/Name'
 
 interface Level {
     map: GameMap<Tile>
@@ -58,6 +59,7 @@ class Game {
         this.ecs.addComponent(player, new BlockMovement())
         this.ecs.addComponent(player, new Health(10, 10))
         this.ecs.addComponent(player, new Faction(FactionName.Player))
+        this.ecs.addComponent(player, new Name('Player'))
 
         console.debug('Game initialized')
     }

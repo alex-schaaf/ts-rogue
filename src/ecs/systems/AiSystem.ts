@@ -30,6 +30,10 @@ class AiSystem extends System {
         }
 
         this.ecs.getEntitiesForSystem(this).forEach((entity) => {
+            if (this.ecs.isEntityDead(entity)) {
+                return
+            }
+
             const container = this.ecs.getComponents(entity)
             const position = container.get(Position)
             if (!position) {
