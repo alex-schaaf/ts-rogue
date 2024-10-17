@@ -1,3 +1,8 @@
+:root {
+    --color-danger-light: #dc2626;
+    --color-danger-dark: #7f1d1d;
+}
+
 body {
     color: #fff;
     font-size: 14px;
@@ -13,17 +18,17 @@ progress[value] {
     width: 150px;
     height: 14px;
 
-    background-color: #800000;
+    background-color:  var(--color-danger-dark);
     border: 1px solid #000;
     border-radius: 2px;
 }
 
 #healthBar::-moz-progress-bar {
-    background-color: #ff0000;
+    background-color: var(--color-danger-light);
 }
 
 #healthBar::-webkit-progress-value {
-    background: #ff0000;
+    background: var(--color-danger-light);
 }
 
 .log-line {
@@ -31,5 +36,5 @@ progress[value] {
 }
 
 .text-danger {
-    color: #990000;
+    color: var(--color-danger-light);
 }
