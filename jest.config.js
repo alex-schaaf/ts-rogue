@@ -13,4 +13,5 @@ module.exports = {
         '^@systems/(.*)$': '<rootDir>/src/ecs/systems/$1',
         '^@events/(.*)$': '<rootDir>/src/ecs/events/$1',
     },
+    setupFiles: ["<rootDir>/jest.setup.js"],
 };
