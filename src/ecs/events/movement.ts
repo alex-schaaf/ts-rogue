@@ -10,7 +10,7 @@ class MoveIntent extends EntityEvent {
     }
 }
 
-class MoveCommand extends EntityEvent {
+class Moved extends EntityEvent {
     constructor(
         public entityId: number,
         public dx: number,
@@ -20,4 +20,4 @@ class MoveCommand extends EntityEvent {
     }
 }
 
-export { MoveIntent, MoveCommand }
+export { MoveIntent, Moved }

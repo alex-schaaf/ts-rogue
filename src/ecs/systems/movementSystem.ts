@@ -1,5 +1,5 @@
 import { Entity, System } from '@lib/ecs'
-import { MoveCommand } from '../events/movement'
+import { Moved } from '../events/movement'
 import { Position } from '../components/Position'
 
 class MovementSystem extends System {
@@ -12,10 +12,10 @@ class MovementSystem extends System {
     public update(entities: Set<Entity>): void {}
 
     public registerEventHandlers(): void {
-        this.eventBus.on(MoveCommand, this.handleMoveIntent.bind(this))
+        this.eventBus.on(Moved, this.handleMoveIntent.bind(this))
     }
 
-    public handleMoveIntent(event: MoveCommand): void {
+    public handleMoveIntent(event: Moved): void {
         const container = this.ecs.getComponents(event.entityId)
         const location = container.get(Position)
 

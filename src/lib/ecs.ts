@@ -187,4 +187,4 @@ class ECS {
     }
 }
 
-export { Component, ComponentContainer, System, ECS, Entity, ComponentClass }
+export { Component, ComponentContainer, System, ECS, Entity, ComponentClass, EventBus }

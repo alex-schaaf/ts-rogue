@@ -68,7 +68,7 @@ class GameMap<T> {
      * @param y - The y-coordinate.
      */
     public delete(x: number, y: number) {
-        delete this.map[this.packCoords(x, y)]
+        this.map.delete(this.packCoords(x, y))
     }
 
     /**

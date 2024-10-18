@@ -1,9 +1,9 @@
-import { Tile } from '../game/tile'
+import { Tile } from '@game/tile'
 
 function getWall(): Tile {
     return {
         char: '#',
-        colorFg: '#efefef',
+        colorFg: '#00ff00',
         colorBg: '#000',
         isWalkable: false,
         isTransparent: false,
@@ -14,7 +14,7 @@ function getWall(): Tile {
 function getFloor(): Tile {
     return {
         char: '.',
-        colorFg: '#404040',
+        colorFg: '#005500',
         colorBg: '#000',
         isWalkable: true,
         isTransparent: true,
