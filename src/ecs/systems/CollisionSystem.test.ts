@@ -6,6 +6,8 @@ import { Tile } from '@game/tile'
 import { ECS } from '@lib/ecs'
 import { EventBus } from '@lib/eventing'
 import { BlockMovement } from '@components/BlockMovement'
+import { Faction, FactionName } from '@components/Faction'
+import { PhysicalAttack } from '@events/combat'
 
 function fillGameMap(gameMap: GameMap<Tile>, width: number, height: number) {
     for (let x = 0; x < width; x++) {
@@ -66,5 +68,34 @@ describe('CollisionSystem', () => {
         
         eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not emit Moved event if movement is blocked by neutral entity', () => {
+        const entityId = ecs.addEntity()
+        const blockingEntityId = ecs.addEntity()
+        ecs.addComponent(entityId, new Position(0, 0))
+        ecs.addComponent(blockingEntityId, new Position(1, 0))
+        ecs.addComponent(blockingEntityId, new BlockMovement())
+
+        const spy = jest.spyOn(eventBus, 'emit')
+        
+        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        expect(spy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should emit PhysicalAttack event if movement is blocked by enemy', () => {
+        const entityId = ecs.addEntity()
+        const blockingEntityId = ecs.addEntity()
+        ecs.addComponent(entityId, new Position(0, 0))
+        ecs.addComponent(entityId, new Faction(FactionName.Player))
+        ecs.addComponent(blockingEntityId, new Position(1, 0))
+        ecs.addComponent(blockingEntityId, new BlockMovement())
+        ecs.addComponent(blockingEntityId, new Faction(FactionName.Enemy))
+
+        const spy = jest.spyOn(eventBus, 'emit')
+        
+        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        expect(spy).toHaveBeenNthCalledWith(2, PhysicalAttack, new PhysicalAttack(entityId, blockingEntityId))
+        expect(spy).toHaveBeenCalledTimes(2)
     })
 })

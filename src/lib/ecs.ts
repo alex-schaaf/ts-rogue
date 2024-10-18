@@ -92,6 +92,22 @@ class ECS {
         return this.entitiesWithComponent.get(componentClass.name) || new Set()
     }
 
+    public getEntitiesWithComponents(componentClasses: Function[]): Set<Entity> {
+        let entities = new Set<Entity>()
+        for (const componentClass of componentClasses) {
+            let componentEntities = this.entitiesWithComponent.get(componentClass.name)
+            if (componentEntities === undefined) {
+                return new Set()
+            }
+            if (entities.size === 0) {
+                entities = new Set(componentEntities)
+            } else {
+                entities = new Set([...entities].filter(x => componentEntities.has(x)))
+            }
+        }
+        return entities
+    }
+
     public removeEntity(entity: Entity): void {
         this.entitiesToDestroy.push(entity)
     }

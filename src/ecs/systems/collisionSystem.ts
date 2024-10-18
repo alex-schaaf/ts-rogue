@@ -69,7 +69,7 @@ class CollisionSystem extends System {
     }
 
     private isBlockedByEntity(x: number, y: number): Entity | null {
-        for (const entity of this.ecs.getEntitiesWithComponent(Position)) {
+        for (const entity of this.ecs.getEntitiesWithComponents([Position, BlockMovement])) {
             const container = this.ecs.getComponents(entity)
             const location = container.get(Position)
 
