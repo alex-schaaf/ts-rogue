@@ -4,17 +4,19 @@ import { EntityRenderSystem } from '@systems/EntityRenderSystem'
 import { MovementSystem } from '@systems/MovementSystem'
 import { CollisionSystem } from '@systems/CollisionSystem'
 import { Renderable } from './ecs/components/Renderable'
-import { Health } from '@components/Health'
-import { BlockMovement } from '@components/BlockMovement'
 import { Position } from '@components/Position'
 import { loop } from '@game/loop'
 import { AiSystem } from '@systems/AiSystem'
 import { PhysicalCombatSystem } from '@systems/PhysicalCombatSystem'
 import { HealthSystem } from '@systems/HealthSystem'
-import { Faction, FactionName } from '@components/Faction'
-import { AiControlled } from '@components/AiControlled'
 import { UiSystem } from '@systems/UiSystem'
+import { InventorySystem } from '@systems/InventorySystem'
+import { IsPocketable } from '@components/IsPocketable'
 import { Name } from '@components/Name'
+import { BlockMovement } from '@components/BlockMovement'
+import { Health } from '@components/Health'
+import { AiControlled } from '@components/AiControlled'
+import { Faction, FactionName } from '@components/Faction'
 
 function initSystems(game: Game) {
     const inputSystem = new InputSystem(game.playerEntity)
@@ -40,6 +42,9 @@ function initSystems(game: Game) {
 
     const uiSystem = new UiSystem(game.playerEntity)
     game.ecs.addSystem(uiSystem)
+
+    const inventorySystem = new InventorySystem()
+    game.ecs.addSystem(inventorySystem)
 }
 
 function main() {
@@ -49,13 +54,19 @@ function main() {
     const game = new Game(mapWidth, mapHeight)
 
     const rat = game.ecs.addEntity()
-    game.ecs.addComponent(rat, new Position(29, 20))
+    game.ecs.addComponent(rat, new Position(25, 30))
     game.ecs.addComponent(rat, new Renderable('r', '#CE422B', '#000'))
     game.ecs.addComponent(rat, new BlockMovement())
     game.ecs.addComponent(rat, new Health(2, 2))
     game.ecs.addComponent(rat, new Faction(FactionName.Enemy))
     game.ecs.addComponent(rat, new AiControlled())
     game.ecs.addComponent(rat, new Name("Rat"))
+
+    const sword = game.ecs.addEntity()
+    game.ecs.addComponent(sword, new Position(28, 20))
+    game.ecs.addComponent(sword, new Renderable('\\', '#FFFFFF', '#000'))
+    game.ecs.addComponent(sword, new IsPocketable())
+    game.ecs.addComponent(sword, new Name("Greatsword +1"))
 
     initSystems(game)
 

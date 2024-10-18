@@ -67,6 +67,7 @@ class ECS {
     // Main state
     private entities = new Map<Entity, ComponentContainer>()
     private systems = new Map<System, Set<Entity>>()
+    public entitiesWithComponent = new Map<string, Set<Entity>>()
 
     // Entity management
     private nextEntityId = 0
@@ -87,6 +88,10 @@ class ECS {
         return this.systems.get(system) || new Set()
     }
 
+    public getEntitiesWithComponent(componentClass: Function): Set<Entity> {
+        return this.entitiesWithComponent.get(componentClass.name)
+    }
+
     public removeEntity(entity: Entity): void {
         this.entitiesToDestroy.push(entity)
     }
@@ -98,6 +103,10 @@ class ECS {
     // API: Components
     public addComponent(entity: Entity, component: Component): void {
         this.entities.get(entity)!.add(component)
+        if (this.entitiesWithComponent.get(component.constructor.name) === undefined) {
+            this.entitiesWithComponent.set(component.constructor.name, new Set())
+        }
+        this.entitiesWithComponent.get(component.constructor.name).add(entity)
         this.checkE(entity)
     }
 
@@ -106,7 +115,8 @@ class ECS {
     }
 
     public removeComponent(entity: Entity, componentClass: Function): void {
-        this.entities.get(entity)!.delete(componentClass)
+        this.entities.get(entity)?.delete(componentClass)
+        this.entitiesWithComponent.get(componentClass.name)?.delete(entity)
         this.checkE(entity)
     }
 
@@ -153,6 +163,9 @@ class ECS {
     private destroyEntity(entity: Entity): void {
         this.entities.delete(entity)
         for (let entities of this.systems.values()) {
+            entities.delete(entity)
+        }
+        for (let entities of this.entitiesWithComponent.values()) {
             entities.delete(entity)
         }
     }

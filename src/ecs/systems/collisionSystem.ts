@@ -6,6 +6,9 @@ import { MoveCommand, MoveIntent } from '../events/movement'
 import { Tile } from '@game/tile'
 import { PhysicalAttack } from '@events/combat'
 import { Faction } from '@components/Faction'
+import { IsPocketable } from '@components/IsPocketable'
+import { AddToInventory } from '@events/inventory'
+import { Inventory } from '@components/Inventory'
 
 /**
  * A system that handles collision detection and resolution.
@@ -29,13 +32,8 @@ class CollisionSystem extends System {
         this.eventBus.on(MoveIntent, this.handleMoveIntent.bind(this))
     }
 
-    /**
-     * Handles the move intent event by determining if the movement is possible
-     * and either issuing a move command or triggering a physical attack.
-     *
-     * @param event - The move intent event containing the entity ID and movement deltas.
-     */
     private handleMoveIntent(event: MoveIntent): void {
+
         const movingComponents = this.ecs.getComponents(event.entityId)
         const location = movingComponents.get(Position)
 
@@ -60,6 +58,11 @@ class CollisionSystem extends System {
             return
         }
 
+        // const pocketableEntity = this.isBlockedByPocketable(targetX, targetY)
+        // if (pocketableEntity !== null && movingComponents.has(Inventory)) {
+        //     this.eventBus.emit(AddToInventory, new AddToInventory(event.entityId, pocketableEntity))
+        // }
+
         this.eventBus.emit(
             MoveCommand,
             new MoveCommand(event.entityId, event.dx, event.dy)
@@ -74,11 +77,27 @@ class CollisionSystem extends System {
      * @returns The entity that blocks the position if found, otherwise null.
      */
     private isBlockedByEntity(x: number, y: number): Entity | null {
-        for (const entity of this.ecs.getEntitiesForSystem(this)) {
+        for (const entity of this.ecs.getEntitiesWithComponent(Position)) {
             const container = this.ecs.getComponents(entity)
             const location = container.get(Position)
 
             if (location.x === x && location.y === y) {
+                return entity
+            }
+        }
+        return null
+    }
+
+    private isBlockedByPocketable(x: number, y: number): Entity | null {
+        for (const entity of this.ecs.getEntitiesWithComponent(IsPocketable)) {
+            const container = this.ecs.getComponents(entity)
+            const location = container.get(Position)
+            if (!location) {
+                continue
+            }
+            const pocketable = container.get(IsPocketable)
+
+            if (location.x === x && location.y === y && pocketable) {
                 return entity
             }
         }
