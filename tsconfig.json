@@ -10,6 +10,7 @@
         },
         "lib": ["DOM", "ES2023"],
         "downlevelIteration": true,
+        "esModuleInterop": true,
         "strict": true,
     },
     "include": ["src/**/*.ts", "src/**/*.test.ts"]
