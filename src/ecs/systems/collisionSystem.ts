@@ -113,7 +113,7 @@ class CollisionSystem extends System {
      */
     private isBlockedByMap(x: number, y: number): boolean {
         const tile = this.gameMap.get(x, y)
-        return !tile.isWalkable
+        return tile?.isWalkable || false
     }
 
     /**

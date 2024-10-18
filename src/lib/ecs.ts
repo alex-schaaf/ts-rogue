@@ -28,8 +28,8 @@ abstract class System {
 
     public abstract registerEventHandlers(): void
 
-    public ecs: ECS
-    public eventBus: EventBus
+    public ecs!: ECS
+    public eventBus!: EventBus
 }
 
 type ComponentClass<T extends Component> = new (...args: any[]) => T
@@ -89,7 +89,7 @@ class ECS {
     }
 
     public getEntitiesWithComponent(componentClass: Function): Set<Entity> {
-        return this.entitiesWithComponent.get(componentClass.name)
+        return this.entitiesWithComponent.get(componentClass.name) || new Set()
     }
 
     public removeEntity(entity: Entity): void {
@@ -106,7 +106,7 @@ class ECS {
         if (this.entitiesWithComponent.get(component.constructor.name) === undefined) {
             this.entitiesWithComponent.set(component.constructor.name, new Set())
         }
-        this.entitiesWithComponent.get(component.constructor.name).add(entity)
+        this.entitiesWithComponent.get(component.constructor.name)!.add(entity)
         this.checkE(entity)
     }
 
