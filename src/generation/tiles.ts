@@ -4,7 +4,7 @@ function getWall(): Tile {
     return {
         char: '#',
         colorFg: '#00ff00',
-        colorBg: '#000',
+        colorBg: '#003300',
         isWalkable: false,
         isTransparent: false,
         isExplored: false,
@@ -14,7 +14,7 @@ function getWall(): Tile {
 function getFloor(): Tile {
     return {
         char: '.',
-        colorFg: '#005500',
+        colorFg: '#003300',
         colorBg: '#000',
         isWalkable: true,
         isTransparent: true,
@@ -22,4 +22,26 @@ function getFloor(): Tile {
     }
 }
 
-export { getWall, getFloor }
+function getStairsUp(): Tile {
+    return {
+        char: '<',
+        colorFg: '#00ff00',
+        colorBg: '#000',
+        isWalkable: true,
+        isTransparent: true,
+        isExplored: false,
+    }
+}
+
+function getStairsDown(): Tile {
+    return {
+        char: '>',
+        colorFg: '#00ff00',
+        colorBg: '#000',
+        isWalkable: true,
+        isTransparent: true,
+        isExplored: false,
+    }
+}
+
+export { getWall, getFloor, getStairsUp, getStairsDown }

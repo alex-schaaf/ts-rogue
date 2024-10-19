@@ -50,19 +50,19 @@ function initSystems(game: Game) {
 }
 
 function main() {
-    const mapWidth = 50
-    const mapHeight = 40
+    const mapWidth = 11
+    const mapHeight = 7
 
     const game = new Game(mapWidth, mapHeight)
 
-    const rat = game.ecs.addEntity()
-    game.ecs.addComponent(rat, new Position(25, 30))
-    game.ecs.addComponent(rat, new Renderable('r', '#CE422B', '#000'))
-    game.ecs.addComponent(rat, new BlockMovement())
-    game.ecs.addComponent(rat, new Health(2, 2))
-    game.ecs.addComponent(rat, new Faction(FactionName.Enemy))
-    game.ecs.addComponent(rat, new AiControlled())
-    game.ecs.addComponent(rat, new Name("Rat"))
+    // const rat = game.ecs.addEntity()
+    // game.ecs.addComponent(rat, new Position(Math.floor(mapWidth / 2), Math.floor(mapHeight / 2)))
+    // game.ecs.addComponent(rat, new Renderable('r', '#CE422B', '#000'))
+    // game.ecs.addComponent(rat, new BlockMovement())
+    // game.ecs.addComponent(rat, new Health(2, 2))
+    // game.ecs.addComponent(rat, new Faction(FactionName.Enemy))
+    // game.ecs.addComponent(rat, new AiControlled())
+    // game.ecs.addComponent(rat, new Name("Rat"))
 
     const sword = game.ecs.addEntity()
     game.ecs.addComponent(sword, new Position(28, 20))

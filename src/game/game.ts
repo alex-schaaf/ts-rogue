@@ -1,7 +1,6 @@
 import * as ROT from 'rot-js'
 import { ECS } from '@lib/ecs'
 import { GameMap } from '@lib/gameMap'
-import { generate } from '../generation/algorithms/rooms'
 import { Tile } from './tile'
 import { IsPlayer } from '@components/IsPlayer'
 import { Position } from '@components/Position'
@@ -11,6 +10,7 @@ import { Renderable } from '@components/Renderable'
 import { Faction, FactionName } from '@components/Faction'
 import { Name } from '@components/Name'
 import { Inventory } from '@components/Inventory'
+import { generate } from 'src/generation/algorithms/simpleLevel'
 
 interface Level {
     map: GameMap<Tile>
@@ -55,7 +55,7 @@ class Game {
         const player = this.ecs.addEntity()
         this.playerEntity = player
         this.ecs.addComponent(player, new IsPlayer())
-        this.ecs.addComponent(player, new Position(25, 20))
+        this.ecs.addComponent(player, new Position(Math.floor(width / 2), Math.floor(height / 2)))
         this.ecs.addComponent(player, new Renderable('@', '#de935f', '#000'))
         this.ecs.addComponent(player, new BlockMovement())
         this.ecs.addComponent(player, new Health(10, 10))
