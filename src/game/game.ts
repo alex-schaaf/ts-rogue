@@ -13,6 +13,7 @@ import { Inventory } from '@components/Inventory'
 import { generate } from 'src/generation/algorithms/simpleLevel'
 
 interface Level {
+    number: number
     map: GameMap<Tile>
 }
 
@@ -45,6 +46,7 @@ class Game {
         mapElement.appendChild(displayContainer)
 
         this.level = {
+            number: 1,
             map: generate(width, height),
         }
 

@@ -17,6 +17,7 @@ import { BlockMovement } from '@components/BlockMovement'
 import { Health } from '@components/Health'
 import { AiControlled } from '@components/AiControlled'
 import { Faction, FactionName } from '@components/Faction'
+import { GameLevelSystem } from '@systems/GameLevelSystem'
 
 function initSystems(game: Game) {
     const inputSystem = new InputSystem(game.playerEntity)
@@ -46,7 +47,8 @@ function initSystems(game: Game) {
     const uiSystem = new UiSystem(game.playerEntity)
     game.ecs.addSystem(uiSystem)
 
-
+    const gameLevelSystem = new GameLevelSystem(game)
+    game.ecs.addSystem(gameLevelSystem)
 }
 
 function main() {
