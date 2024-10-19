@@ -42,11 +42,10 @@ describe('ECS System', () => {
 
         expect(ecs.getComponents(entity).get(TestComponentA)).toBe(componentA)
         expect(ecs.getComponents(entity).get(TestComponentB)).toBe(componentB)
-        
+
         ecs.removeComponent(entity, TestComponentA)
         expect(ecs.getComponents(entity).get(TestComponentA)).toBeUndefined()
         expect(ecs.getComponents(entity).get(TestComponentB)).toBe(componentB)
-
     })
 
     test('adding a system should register event handlers', () => {
@@ -67,13 +66,17 @@ describe('ECS System', () => {
 
     test('adding a component should add the entity to the entitiesWithComponent map', () => {
         ecs.addComponent(entity, new TestComponentA())
-        expect(ecs.getEntitiesWithComponent(TestComponentA).has(entity)).toBe(true)
+        expect(ecs.getEntitiesWithComponent(TestComponentA).has(entity)).toBe(
+            true
+        )
     })
 
     test('removing a component should remove the entity from the entitiesWithComponent map', () => {
         ecs.addComponent(entity, new TestComponentA())
         ecs.removeComponent(entity, TestComponentA)
-        expect(ecs.getEntitiesWithComponent(TestComponentA).has(entity)).toBe(false)
+        expect(ecs.getEntitiesWithComponent(TestComponentA).has(entity)).toBe(
+            false
+        )
     })
 
     test('getEntitiesWithComponents should return entities with all specified components', () => {
@@ -86,7 +89,10 @@ describe('ECS System', () => {
         ecs.addComponent(entity1, componentB)
         ecs.addComponent(entity2, componentA)
 
-        const entities = ecs.getEntitiesWithComponents([TestComponentA, TestComponentB])
+        const entities = ecs.getEntitiesWithComponents([
+            TestComponentA,
+            TestComponentB,
+        ])
         expect(entities.has(entity1)).toBe(true)
         expect(entities.has(entity2)).toBe(false)
     })
@@ -96,12 +102,18 @@ describe('ECS System', () => {
         const entity1 = ecs.addEntity()
         ecs.addComponent(entity1, componentA)
 
-        const entities = ecs.getEntitiesWithComponents([TestComponentA, TestComponentB])
+        const entities = ecs.getEntitiesWithComponents([
+            TestComponentA,
+            TestComponentB,
+        ])
         expect(entities.size).toBe(0)
     })
 
     test('getEntitiesWithComponents should return an empty set if no entities have any of the specified components', () => {
-        const entities = ecs.getEntitiesWithComponents([TestComponentA, TestComponentB])
+        const entities = ecs.getEntitiesWithComponents([
+            TestComponentA,
+            TestComponentB,
+        ])
         expect(entities.size).toBe(0)
     })
 })
