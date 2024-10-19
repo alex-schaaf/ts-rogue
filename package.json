@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
     "pino": "^9.5.0",
