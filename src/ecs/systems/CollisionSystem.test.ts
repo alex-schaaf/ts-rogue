@@ -8,6 +8,9 @@ import { EventBus } from '@lib/eventing'
 import { BlockMovement } from '@components/BlockMovement'
 import { Faction, FactionName } from '@components/Faction'
 import { PhysicalAttack } from '@events/combat'
+import { AddToInventory } from '@events/inventory'
+import { IsPocketable } from '@components/IsPocketable'
+import { Inventory } from '@components/Inventory'
 
 function fillGameMap(gameMap: GameMap<Tile>, width: number, height: number) {
     for (let x = 0; x < width; x++) {
@@ -97,5 +100,20 @@ describe('CollisionSystem', () => {
         eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenNthCalledWith(2, PhysicalAttack, new PhysicalAttack(entityId, blockingEntityId))
         expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it('should emit AddToInventory event if movement is blocked by pocketable entity', () => {
+        const entityId = ecs.addEntity()
+        const pocketableEntityId = ecs.addEntity()
+        ecs.addComponent(entityId, new Position(0, 0))
+        ecs.addComponent(entityId, new Inventory())
+        ecs.addComponent(pocketableEntityId, new Position(1, 0))
+        ecs.addComponent(pocketableEntityId, new IsPocketable())
+
+        const spy = jest.spyOn(eventBus, 'emit')
+        
+        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        expect(spy).toHaveBeenNthCalledWith(2, AddToInventory, new AddToInventory(entityId, pocketableEntityId))
+        expect(spy).toHaveBeenNthCalledWith(3, Moved, new Moved(entityId, 1, 0))
     })
 })
