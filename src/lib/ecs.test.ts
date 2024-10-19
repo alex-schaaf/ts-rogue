@@ -75,4 +75,33 @@ describe('ECS System', () => {
         ecs.removeComponent(entity, TestComponentA)
         expect(ecs.getEntitiesWithComponent(TestComponentA).has(entity)).toBe(false)
     })
+
+    test('getEntitiesWithComponents should return entities with all specified components', () => {
+        const componentA = new TestComponentA()
+        const componentB = new TestComponentB()
+        const entity1 = ecs.addEntity()
+        const entity2 = ecs.addEntity()
+
+        ecs.addComponent(entity1, componentA)
+        ecs.addComponent(entity1, componentB)
+        ecs.addComponent(entity2, componentA)
+
+        const entities = ecs.getEntitiesWithComponents([TestComponentA, TestComponentB])
+        expect(entities.has(entity1)).toBe(true)
+        expect(entities.has(entity2)).toBe(false)
+    })
+
+    test('getEntitiesWithComponents should return an empty set if no entities have all specified components', () => {
+        const componentA = new TestComponentA()
+        const entity1 = ecs.addEntity()
+        ecs.addComponent(entity1, componentA)
+
+        const entities = ecs.getEntitiesWithComponents([TestComponentA, TestComponentB])
+        expect(entities.size).toBe(0)
+    })
+
+    test('getEntitiesWithComponents should return an empty set if no entities have any of the specified components', () => {
+        const entities = ecs.getEntitiesWithComponents([TestComponentA, TestComponentB])
+        expect(entities.size).toBe(0)
+    })
 })

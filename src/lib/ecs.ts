@@ -92,7 +92,7 @@ class ECS {
         return this.entitiesWithComponent.get(componentClass.name) || new Set()
     }
 
-    public getEntitiesWithComponents(componentClasses: Function[]): Set<Entity> {
+    public getEntitiesWithComponents(componentClasses: Array<Function>): Set<Entity> {
         let entities = new Set<Entity>()
         for (const componentClass of componentClasses) {
             let componentEntities = this.entitiesWithComponent.get(componentClass.name)
