@@ -57,10 +57,10 @@ class CollisionSystem extends System {
             return
         }
 
-        // const pocketableEntity = this.isBlockedByPocketable(targetX, targetY)
-        // if (pocketableEntity !== null && movingComponents.has(Inventory)) {
-        //     this.eventBus.emit(AddToInventory, new AddToInventory(event.entityId, pocketableEntity))
-        // }
+        const pocketableEntity = this.containsPocketable(targetX, targetY)
+        if (pocketableEntity !== null && movingComponents.has(Inventory)) {
+            this.eventBus.emit(AddToInventory, new AddToInventory(event.entityId, pocketableEntity))
+        }
 
         this.eventBus.emit(
             Moved,
@@ -80,7 +80,7 @@ class CollisionSystem extends System {
         return null
     }
 
-    private isBlockedByPocketable(x: number, y: number): Entity | null {
+    private containsPocketable(x: number, y: number): Entity | null {
         for (const entity of this.ecs.getEntitiesWithComponent(IsPocketable)) {
             const container = this.ecs.getComponents(entity)
             const location = container.get(Position)
