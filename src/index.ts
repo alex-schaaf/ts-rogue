@@ -28,6 +28,9 @@ function initSystems(game: Game) {
     const collisionSystem = new CollisionSystem(game.level.map)
     game.ecs.addSystem(collisionSystem)
 
+    const inventorySystem = new InventorySystem()
+    game.ecs.addSystem(inventorySystem)
+
     const physicalCombatSystem = new PhysicalCombatSystem()
     game.ecs.addSystem(physicalCombatSystem)
 
@@ -43,8 +46,7 @@ function initSystems(game: Game) {
     const uiSystem = new UiSystem(game.playerEntity)
     game.ecs.addSystem(uiSystem)
 
-    const inventorySystem = new InventorySystem()
-    game.ecs.addSystem(inventorySystem)
+
 }
 
 function main() {

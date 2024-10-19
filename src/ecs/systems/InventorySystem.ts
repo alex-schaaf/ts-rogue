@@ -1,6 +1,7 @@
 import { Inventory } from '@components/Inventory'
 import { Position } from '@components/Position'
 import { AddToInventory } from '@events/inventory'
+import { UIInventoryAdded } from '@events/ui'
 import { System } from '@lib/ecs'
 
 class InventorySystem extends System {
@@ -18,6 +19,8 @@ class InventorySystem extends System {
         inventory.items.push(event.itemId)
         
         this.ecs.removeComponent(event.itemId, Position) // remove item from map
+
+        this.eventBus.emit(UIInventoryAdded, new UIInventoryAdded(event.entityId, event.itemId))        
     }
 }
 

@@ -19,3 +19,12 @@ export class UIAttackUpdate extends EntityEvent {
         super()
     }
 }
+
+export class UIInventoryAdded extends EntityEvent {
+    constructor(
+        public entityId: number,
+        public itemId: number
+    ) {
+        super()
+    }
+}

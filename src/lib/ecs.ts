@@ -23,6 +23,7 @@ abstract class System {
 
     /**
      * update() is called every frame with a set of entities.
+     * ! TODO probably don't need this if I go down the event route
      */
     public abstract update(entities: Set<Entity>): void
 
@@ -92,17 +93,23 @@ class ECS {
         return this.entitiesWithComponent.get(componentClass.name) || new Set()
     }
 
-    public getEntitiesWithComponents(componentClasses: Array<Function>): Set<Entity> {
+    public getEntitiesWithComponents(
+        componentClasses: Array<Function>
+    ): Set<Entity> {
         let entities = new Set<Entity>()
         for (const componentClass of componentClasses) {
-            let componentEntities = this.entitiesWithComponent.get(componentClass.name)
+            let componentEntities = this.entitiesWithComponent.get(
+                componentClass.name
+            )
             if (componentEntities === undefined) {
                 return new Set()
             }
             if (entities.size === 0) {
                 entities = new Set(componentEntities)
             } else {
-                entities = new Set([...entities].filter(x => componentEntities.has(x)))
+                entities = new Set(
+                    [...entities].filter((x) => componentEntities.has(x))
+                )
             }
         }
         return entities
@@ -119,8 +126,14 @@ class ECS {
     // API: Components
     public addComponent(entity: Entity, component: Component): void {
         this.entities.get(entity)!.add(component)
-        if (this.entitiesWithComponent.get(component.constructor.name) === undefined) {
-            this.entitiesWithComponent.set(component.constructor.name, new Set())
+        if (
+            this.entitiesWithComponent.get(component.constructor.name) ===
+            undefined
+        ) {
+            this.entitiesWithComponent.set(
+                component.constructor.name,
+                new Set()
+            )
         }
         this.entitiesWithComponent.get(component.constructor.name)!.add(entity)
         this.checkE(entity)
@@ -203,4 +216,12 @@ class ECS {
     }
 }
 
-export { Component, ComponentContainer, System, ECS, Entity, ComponentClass, EventBus }
+export {
+    Component,
+    ComponentContainer,
+    System,
+    ECS,
+    Entity,
+    ComponentClass,
+    EventBus,
+}
