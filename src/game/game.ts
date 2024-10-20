@@ -1,5 +1,5 @@
 import * as ROT from 'rot-js'
-import { ECS } from '@lib/ecs'
+import { ComponentContainer, ECS, Entity } from '@lib/ecs'
 import { GameMap } from '@lib/gameMap'
 import { Tile } from './tile'
 import { IsPlayer } from '@components/IsPlayer'
@@ -14,7 +14,10 @@ import { generate } from 'src/generation/algorithms/simpleLevel'
 import { DisplayOptions } from 'rot-js/lib/display/types'
 
 interface Level {
+    // The map of the level
     map: GameMap<Tile>
+    // Entities belonging to this level that are not currently active in the ECS
+    storedEntities: ComponentContainer[]
 }
 
 interface GameSettings {
@@ -45,6 +48,7 @@ class Game {
 
         this.levels.push({
             map: generate(width, height),
+            storedEntities: [],
         })
 
         this.settings = {
@@ -92,14 +96,71 @@ class Game {
     public nextLevel(): void {
         this.levels.push({
             map: generate(this.displayWidth, this.displayHeight),
+            storedEntities: [],
         })
+        this.storeEntitiesOf(this.currentLevel)
         this.currentLevel++
     }
 
+    /**
+     * Navigates to the previous level in the game. If the current level is
+     * greater than 0, it decrements the current level. After updating the
+     * level, it restores the entities of the new current level.
+     */
     public previousLevel(): void {
         if (this.currentLevel > 0) {
             this.currentLevel--
         }
+        this.restoreEntitiesOf(this.currentLevel)
+    }
+
+    /**
+     * Stores entities of a specified level that have a Position component.
+     *
+     * This method iterates through all entities managed by the ECS (Entity
+     * Component System). If an entity is not the player entity and has a
+     * Position component, it is stored in the specified level's storedEntities
+     * array and then removed from the ECS.
+     *
+     * @param level - The level number whose entities are to be stored.
+     *
+     * @remarks
+     * - Player entity is skipped and not stored.
+     * - Only entities with a Position component are stored.
+     * - After storing, the entity is removed from the ECS.
+     */
+    private storeEntitiesOf(level: number): void {
+        const entities = this.ecs.getEntities()
+        for (const [entitiy, components] of entities) {
+            if (entitiy === this.playerEntity) {
+                continue
+            }
+            if (components.has(Position)) {
+                this.levels[level].storedEntities.push(components)
+                this.ecs.removeEntity(entitiy)
+            }
+        }
+        console.debug('Stored entities:', this.levels[level].storedEntities)
+    }
+
+    /**
+     * Restores the entities of a specified level by adding them back to the ECS
+     * (Entity Component System).
+     *
+     * @param level - The level number whose entities are to be restored.
+     *
+     * This method iterates through the stored entities of the specified level,
+     * adds each entity back to the ECS, and then clears the stored entities
+     * list for that level.
+     */
+    private restoreEntitiesOf(level: number): void {
+        for (const components of this.levels[level].storedEntities) {
+            const entity = this.ecs.addEntity()
+            for (const component of components.getAll()) {
+                this.ecs.addComponent(entity, component)
+            }
+        }
+        this.levels[level].storedEntities = []
     }
 }
 

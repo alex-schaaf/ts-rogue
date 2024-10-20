@@ -46,6 +46,10 @@ class ComponentContainer {
         return this.map.get(componentClass) as T
     }
 
+    public getAll(): Iterable<Component> {
+        return this.map.values()
+    }
+
     public has(componentClass: Function): boolean {
         return this.map.has(componentClass)
     }
@@ -83,6 +87,10 @@ class ECS {
         this.nextEntityId++
         this.entities.set(entity, new ComponentContainer())
         return entity
+    }
+
+    public getEntities(): Map<Entity, ComponentContainer> {
+        return this.entities
     }
 
     public getEntitiesForSystem(system: System): Set<Entity> {
