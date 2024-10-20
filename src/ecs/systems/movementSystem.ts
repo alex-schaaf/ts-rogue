@@ -19,8 +19,8 @@ class MovementSystem extends System {
         const container = this.ecs.getComponents(event.entityId)
         const location = container.get(Position)
 
-        location.x += event.dx
-        location.y += event.dy
+        location.x = event.x
+        location.y = event.y
     }
 }
 

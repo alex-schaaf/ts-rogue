@@ -30,8 +30,13 @@ class Game {
 
     public ecs = new ECS()
     public playerEntity: number
+    private displayWidth: number
+    private displayHeight: number
 
     constructor(width: number, height: number) {
+        this.displayWidth = width
+        this.displayHeight = height
+
         this.display = registerDisplay({
             width: width,
             height: height,
@@ -84,11 +89,17 @@ class Game {
      * current level. It generates a new level map and increments the current
      * level counter.
      */
-    public nextLevel(width: number, height: number): void {
+    public nextLevel(): void {
         this.levels.push({
-            map: generate(width, height),
+            map: generate(this.displayWidth, this.displayHeight),
         })
         this.currentLevel++
+    }
+
+    public previousLevel(): void {
+        if (this.currentLevel > 0) {
+            this.currentLevel--
+        }
     }
 }
 

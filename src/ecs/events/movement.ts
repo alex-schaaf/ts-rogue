@@ -13,8 +13,8 @@ class MoveIntent extends EntityEvent {
 class Moved extends EntityEvent {
     constructor(
         public entityId: number,
-        public dx: number,
-        public dy: number
+        public x: number,
+        public y: number
     ) {
         super()
     }

@@ -8,6 +8,9 @@ import { IsPocketable } from '@components/IsPocketable'
 import { AddToInventory } from '@events/inventory'
 import { Inventory } from '@components/Inventory'
 import { Game } from '@game/game'
+import { IsPlayer } from '@components/IsPlayer'
+import { Tile } from '@game/tile'
+import { ToNextLevel, ToPreviousLevel } from '@events/level'
 
 interface MoveDestination {
     movingEntity: Entity
@@ -20,6 +23,13 @@ enum EntityCollisionType {
     BlockedByEnemy,
     Pocketable,
     Unblocked,
+}
+
+enum MapCollisionType {
+    Blocked,
+    Unblocked,
+    StairsUp,
+    StairsDown,
 }
 
 /**
@@ -58,8 +68,18 @@ class CollisionSystem extends System {
             y: targetY,
         }
 
-        if (this.isBlockedByMap(targetX, targetY)) {
-            return // Movement is blocked
+        const mapCollision = this.handleMapCollision(md)
+        if (mapCollision === MapCollisionType.Blocked) {
+            return
+        } else if (mapCollision === MapCollisionType.StairsUp) {
+            this.eventBus.emit(
+                ToPreviousLevel,
+                new ToPreviousLevel(event.entityId)
+            )
+            return
+        } else if (mapCollision === MapCollisionType.StairsDown) {
+            this.eventBus.emit(ToNextLevel, new ToNextLevel(event.entityId))
+            return
         }
 
         const { type, entity } = this.handleEntityCollision(md)
@@ -80,7 +100,7 @@ class CollisionSystem extends System {
             )
         }
 
-        this.eventBus.emit(Moved, new Moved(event.entityId, event.dx, event.dy))
+        this.eventBus.emit(Moved, new Moved(event.entityId, targetX, targetY))
     }
 
     private handleEntityCollision(md: MoveDestination): {
@@ -106,9 +126,29 @@ class CollisionSystem extends System {
         return { type: EntityCollisionType.Unblocked }
     }
 
-    private isBlockedByMap(x: number, y: number): boolean {
-        const tile = this.game.getMap().get(x, y)
-        return !tile?.isWalkable || false
+    private handleMapCollision(md: MoveDestination): MapCollisionType {
+        const tile = this.game.getMap().get(md.x, md.y)
+        if (tile === undefined) {
+            return MapCollisionType.Blocked
+        }
+        if (!tile.isWalkable) {
+            return MapCollisionType.Blocked
+        }
+        if (this.isStairsUp(tile)) {
+            return MapCollisionType.StairsUp
+        }
+        if (this.isStairsDown(tile)) {
+            return MapCollisionType.StairsDown
+        }
+        return MapCollisionType.Unblocked
+    }
+
+    private isStairsUp(tile: Tile): boolean {
+        return tile.char === '<'
+    }
+
+    private isStairsDown(tile: Tile): boolean {
+        return tile.char === '>'
     }
 
     private isBlockedByEnemy(
