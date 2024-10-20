@@ -26,6 +26,9 @@ class GameLevelSystem extends System {
     }
 
     private handlePlayerPreviousLevel(): void {
+        if (this.game.currentLevel === 0) {
+            return
+        }
         this.game.previousLevel()
         this.eventBus.emit(Moved, new Moved(this.game.playerEntity, 9, 3))
     }
