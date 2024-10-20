@@ -22,7 +22,7 @@ class GameLevelSystem extends System {
 
     private handlePlayerNextLevel(): void {
         this.game.nextLevel()
-        this.eventBus.emit(Moved, new Moved(this.game.playerEntity, 1, 3))
+        this.eventBus.emit(new Moved(this.game.playerEntity, 1, 3))
     }
 
     private handlePlayerPreviousLevel(): void {
@@ -30,7 +30,7 @@ class GameLevelSystem extends System {
             return
         }
         this.game.previousLevel()
-        this.eventBus.emit(Moved, new Moved(this.game.playerEntity, 9, 3))
+        this.eventBus.emit(new Moved(this.game.playerEntity, 9, 3))
     }
 }
 

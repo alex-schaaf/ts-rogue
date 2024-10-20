@@ -25,30 +25,26 @@ class InputSystem extends System {
         switch (event.key) {
             case 'ArrowUp':
                 this.eventBus.emit(
-                    MoveIntent,
                     new MoveIntent(this.player, 0, -1)
                 )
                 break
             case 'ArrowDown':
                 this.eventBus.emit(
-                    MoveIntent,
                     new MoveIntent(this.player, 0, 1)
                 )
                 break
             case 'ArrowLeft':
                 this.eventBus.emit(
-                    MoveIntent,
                     new MoveIntent(this.player, -1, 0)
                 )
                 break
             case 'ArrowRight':
                 this.eventBus.emit(
-                    MoveIntent,
                     new MoveIntent(this.player, 1, 0)
                 )
                 break
         }
-        this.eventBus.emit(PlayerTookTurn, new PlayerTookTurn(this.player))
+        this.eventBus.emit(new PlayerTookTurn(this.player))
     }
 }
 

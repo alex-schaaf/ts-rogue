@@ -55,7 +55,7 @@ describe('CollisionSystem', () => {
 
         const spy = jest.spyOn(eventBus, 'emit')
         
-        eventBus.emit(MoveIntent, moveIntent)
+        eventBus.emit(moveIntent)
         
         expect(spy).toHaveBeenNthCalledWith(1, MoveIntent, new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenNthCalledWith(2, Moved, new Moved(entityId, 1, 0))
@@ -69,7 +69,7 @@ describe('CollisionSystem', () => {
 
         const spy = jest.spyOn(eventBus, 'emit')
         
-        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        eventBus.emit(new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenCalledTimes(1)
     })
 
@@ -82,7 +82,7 @@ describe('CollisionSystem', () => {
 
         const spy = jest.spyOn(eventBus, 'emit')
         
-        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        eventBus.emit(new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenCalledTimes(1)
     })
 
@@ -97,7 +97,7 @@ describe('CollisionSystem', () => {
 
         const spy = jest.spyOn(eventBus, 'emit')
         
-        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        eventBus.emit(new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenNthCalledWith(2, PhysicalAttack, new PhysicalAttack(entityId, blockingEntityId))
         expect(spy).toHaveBeenCalledTimes(2)
     })
@@ -112,7 +112,7 @@ describe('CollisionSystem', () => {
 
         const spy = jest.spyOn(eventBus, 'emit')
         
-        eventBus.emit(MoveIntent, new MoveIntent(entityId, 1, 0))
+        eventBus.emit(new MoveIntent(entityId, 1, 0))
         expect(spy).toHaveBeenNthCalledWith(2, AddToInventory, new AddToInventory(entityId, pocketableEntityId))
         expect(spy).toHaveBeenNthCalledWith(3, Moved, new Moved(entityId, 1, 0))
     })

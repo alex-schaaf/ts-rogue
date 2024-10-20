@@ -73,12 +73,12 @@ class CollisionSystem extends System {
             return
         } else if (mapCollision === MapCollisionType.StairsUp) {
             this.eventBus.emit(
-                ToPreviousLevel,
+                
                 new ToPreviousLevel(event.entityId)
             )
             return
         } else if (mapCollision === MapCollisionType.StairsDown) {
-            this.eventBus.emit(ToNextLevel, new ToNextLevel(event.entityId))
+            this.eventBus.emit(new ToNextLevel(event.entityId))
             return
         }
 
@@ -86,7 +86,7 @@ class CollisionSystem extends System {
 
         if (type === EntityCollisionType.BlockedByEnemy) {
             this.eventBus.emit(
-                PhysicalAttack,
+                
                 new PhysicalAttack(event.entityId, entity!)
             )
             return
@@ -95,12 +95,12 @@ class CollisionSystem extends System {
             movingComponents.has(Inventory)
         ) {
             this.eventBus.emit(
-                AddToInventory,
+                
                 new AddToInventory(event.entityId, entity!)
             )
         }
 
-        this.eventBus.emit(Moved, new Moved(event.entityId, targetX, targetY))
+        this.eventBus.emit(new Moved(event.entityId, targetX, targetY))
     }
 
     private handleEntityCollision(md: MoveDestination): {

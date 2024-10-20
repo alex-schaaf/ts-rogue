@@ -20,7 +20,7 @@ class InventorySystem extends System {
         
         this.ecs.removeComponent(event.itemId, Position) // remove item from map
 
-        this.eventBus.emit(UIInventoryAdded, new UIInventoryAdded(event.entityId, event.itemId))        
+        this.eventBus.emit( new UIInventoryAdded(event.entityId, event.itemId))        
     }
 }
 

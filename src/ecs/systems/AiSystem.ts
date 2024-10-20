@@ -50,7 +50,7 @@ class AiSystem extends System {
             astar.compute(position.x, position.y, (x, y) => {
                 path.push({ x, y })
             })
-            this.eventBus.emit(MoveIntent, new MoveIntent(entity, path[1].x - position.x, path[1].y - position.y))
+            this.eventBus.emit(new MoveIntent(entity, path[1].x - position.x, path[1].y - position.y))
         })
     }
 }

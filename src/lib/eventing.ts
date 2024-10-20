@@ -22,7 +22,8 @@ class EventBus {
         this.eventHandlers.get(eventType)!.push(handler)
     }
 
-    public emit(eventType: EventClass, event: EntityEvent): void {
+    public emit(event: EntityEvent): void {
+        const eventType = event.constructor as EventClass
         EventLogger.debug({ eventType: eventType.name, ...event })
         this.eventHandlers.get(eventType)?.forEach((handler) => {
             handler(event)

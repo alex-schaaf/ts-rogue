@@ -19,11 +19,11 @@ class HealthSystem extends System {
 
         health.current -= event.amount
 
-        this.eventBus.emit(UIHealthUpdate, new UIHealthUpdate(event.entityId, health.current, health.max))
+        this.eventBus.emit( new UIHealthUpdate(event.entityId, health.current, health.max))
 
         if (health.current <= 0) {
             this.ecs.removeEntity(event.entityId)
-            this.eventBus.emit(Died, new Died(event.entityId))
+            this.eventBus.emit( new Died(event.entityId))
         }
     }
 }

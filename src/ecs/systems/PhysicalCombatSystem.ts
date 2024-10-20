@@ -19,8 +19,8 @@ class PhysicalCombatSystem extends System {
 
     private handlePhysicalAttack(event: PhysicalAttack): void {
         const damage = 1
-        this.eventBus.emit(TookDamage, new TookDamage(event.targetId, damage))
-        this.eventBus.emit(UIAttackUpdate, new UIAttackUpdate(event.entityId, event.targetId, damage))
+        this.eventBus.emit( new TookDamage(event.targetId, damage))
+        this.eventBus.emit( new UIAttackUpdate(event.entityId, event.targetId, damage))
     }
 }
 

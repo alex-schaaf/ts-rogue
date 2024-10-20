@@ -1,5 +1,5 @@
 import * as ROT from 'rot-js'
-import { ComponentContainer, ECS, Entity } from '@lib/ecs'
+import { ComponentContainer, ECS } from '@lib/ecs'
 import { GameMap } from '@lib/gameMap'
 import { Tile } from './tile'
 import { IsPlayer } from '@components/IsPlayer'
@@ -140,7 +140,6 @@ class Game {
                 this.ecs.removeEntity(entitiy)
             }
         }
-        console.debug('Stored entities:', this.levels[level].storedEntities)
     }
 
     /**
