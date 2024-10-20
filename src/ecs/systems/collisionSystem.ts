@@ -9,6 +9,19 @@ import { AddToInventory } from '@events/inventory'
 import { Inventory } from '@components/Inventory'
 import { Game } from '@game/game'
 
+interface MoveDestination {
+    movingEntity: Entity
+    movingEntityComponents: ComponentContainer
+    x: number
+    y: number
+}
+
+enum EntityCollisionType {
+    BlockedByEnemy,
+    Pocketable,
+    Unblocked,
+}
+
 /**
  * A system that handles collision detection and resolution.
  *
@@ -38,61 +51,59 @@ class CollisionSystem extends System {
         const targetX = location.x + event.dx
         const targetY = location.y + event.dy
 
+        const md: MoveDestination = {
+            movingEntity: event.entityId,
+            movingEntityComponents: movingComponents,
+            x: targetX,
+            y: targetY,
+        }
+
         if (this.isBlockedByMap(targetX, targetY)) {
             return // Movement is blocked
         }
 
-        const blockingEntity = this.isBlockedByEntity(targetX, targetY)
+        const { type, entity } = this.handleEntityCollision(md)
 
-        if (blockingEntity !== null) {
-            const blockingComponents = this.ecs.getComponents(blockingEntity)
-
-            if (this.isBlockedByEnemy(movingComponents, blockingComponents)) {
-                this.eventBus.emit(
-                    PhysicalAttack,
-                    new PhysicalAttack(event.entityId, blockingEntity)
-                )
-            }
+        if (type === EntityCollisionType.BlockedByEnemy) {
+            this.eventBus.emit(
+                PhysicalAttack,
+                new PhysicalAttack(event.entityId, entity!)
+            )
             return
+        } else if (
+            type === EntityCollisionType.Pocketable &&
+            movingComponents.has(Inventory)
+        ) {
+            this.eventBus.emit(
+                AddToInventory,
+                new AddToInventory(event.entityId, entity!)
+            )
         }
 
-        const pocketableEntity = this.containsPocketable(targetX, targetY)
-        if (pocketableEntity !== null && movingComponents.has(Inventory)) {
-            this.eventBus.emit(AddToInventory, new AddToInventory(event.entityId, pocketableEntity))
-        }
-
-        this.eventBus.emit(
-            Moved,
-            new Moved(event.entityId, event.dx, event.dy)
-        )
+        this.eventBus.emit(Moved, new Moved(event.entityId, event.dx, event.dy))
     }
 
-    private isBlockedByEntity(x: number, y: number): Entity | null {
-        for (const entity of this.ecs.getEntitiesWithComponents([Position, BlockMovement])) {
-            const container = this.ecs.getComponents(entity)
-            const location = container.get(Position)
-
-            if (location.x === x && location.y === y) {
-                return entity
+    private handleEntityCollision(md: MoveDestination): {
+        type: EntityCollisionType
+        entity?: Entity
+    } {
+        for (const entity of this.ecs.getEntitiesWithComponent(Position)) {
+            const components = this.ecs.getComponents(entity)
+            const position = components.get(Position)
+            if (position.x !== md.x || position.y !== md.y) {
+                continue // entity is not at the target location
             }
-        }
-        return null
-    }
-
-    private containsPocketable(x: number, y: number): Entity | null {
-        for (const entity of this.ecs.getEntitiesWithComponent(IsPocketable)) {
-            const container = this.ecs.getComponents(entity)
-            const location = container.get(Position)
-            if (!location) {
+            if (!components.has(BlockMovement)) {
+                if (components.has(IsPocketable)) {
+                    return { type: EntityCollisionType.Pocketable, entity }
+                }
                 continue
             }
-            const pocketable = container.get(IsPocketable)
-
-            if (location.x === x && location.y === y && pocketable) {
-                return entity
+            if (this.isBlockedByEnemy(md.movingEntityComponents, components)) {
+                return { type: EntityCollisionType.BlockedByEnemy, entity }
             }
         }
-        return null
+        return { type: EntityCollisionType.Unblocked }
     }
 
     private isBlockedByMap(x: number, y: number): boolean {

@@ -49,7 +49,10 @@ class Game {
         const player = this.ecs.addEntity()
         this.playerEntity = player
         this.ecs.addComponent(player, new IsPlayer())
-        this.ecs.addComponent(player, new Position(Math.floor(width / 2), Math.floor(height / 2)))
+        this.ecs.addComponent(
+            player,
+            new Position(Math.floor(width / 2), Math.floor(height / 2))
+        )
         this.ecs.addComponent(player, new Renderable('@', '#de935f', '#000'))
         this.ecs.addComponent(player, new BlockMovement())
         this.ecs.addComponent(player, new Health(10, 10))
@@ -60,17 +63,47 @@ class Game {
         console.debug('Game initialized')
     }
 
+    /**
+     * Retrieves the current level object.
+     */
     public getLevel(): Level {
         return this.levels[this.currentLevel]
     }
 
+    /**
+     * Retrieves the current game map.
+     */
     public getMap(): GameMap<Tile> {
         return this.getLevel().map
+    }
+
+    /**
+     * Progresses the game to the next level.
+     *
+     * This method is called when the player character reaches the exit of the
+     * current level. It generates a new level map and increments the current
+     * level counter.
+     */
+    public nextLevel(width: number, height: number): void {
+        this.levels.push({
+            map: generate(width, height),
+        })
+        this.currentLevel++
     }
 }
 
 export { Game, GameMap }
 
+/**
+ * Registers and initializes a ROT.js display with the given settings.
+ *
+ * This function creates a new ROT.Display instance using the provided settings,
+ * retrieves its container element, and appends it to the DOM element with the ID 'map'.
+ *
+ * @param settings - A partial object of DisplayOptions to configure the display.
+ * @returns The initialized ROT.Display instance.
+ * @throws Will throw an error if the display container or the map element is not found.
+ */
 function registerDisplay(settings: Partial<DisplayOptions>): ROT.Display {
     const display = new ROT.Display(settings)
     const displayContainer = display.getContainer()
