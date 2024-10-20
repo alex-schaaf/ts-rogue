@@ -1,14 +1,13 @@
-import { GameMap } from '@lib/gameMap'
 import { BlockMovement } from '@components/BlockMovement'
 import { Position } from '@components/Position'
 import { ComponentContainer, Entity, System } from '@lib/ecs'
 import { Moved, MoveIntent } from '../events/movement'
-import { Tile } from '@game/tile'
 import { PhysicalAttack } from '@events/combat'
 import { Faction } from '@components/Faction'
 import { IsPocketable } from '@components/IsPocketable'
 import { AddToInventory } from '@events/inventory'
 import { Inventory } from '@components/Inventory'
+import { Game } from '@game/game'
 
 /**
  * A system that handles collision detection and resolution.
@@ -19,11 +18,11 @@ import { Inventory } from '@components/Inventory'
  */
 class CollisionSystem extends System {
     componentsRequired = new Set<Function>([Position, BlockMovement])
-    gameMap: GameMap<Tile>
+    game: Game
 
-    constructor(gameMap: GameMap<Tile>) {
+    constructor(game: Game) {
         super()
-        this.gameMap = gameMap
+        this.game = game
     }
 
     public update(): void {}
@@ -97,7 +96,7 @@ class CollisionSystem extends System {
     }
 
     private isBlockedByMap(x: number, y: number): boolean {
-        const tile = this.gameMap.get(x, y)
+        const tile = this.game.getMap().get(x, y)
         return !tile?.isWalkable || false
     }
 

@@ -11,9 +11,9 @@ import { Faction, FactionName } from '@components/Faction'
 import { Name } from '@components/Name'
 import { Inventory } from '@components/Inventory'
 import { generate } from 'src/generation/algorithms/simpleLevel'
+import { DisplayOptions } from 'rot-js/lib/display/types'
 
 interface Level {
-    number: number
     map: GameMap<Tile>
 }
 
@@ -23,32 +23,24 @@ interface GameSettings {
 
 class Game {
     display: ROT.Display
-    level: Level
     settings: GameSettings
+
+    levels: Level[] = []
+    currentLevel: number = 0
 
     public ecs = new ECS()
     public playerEntity: number
 
     constructor(width: number, height: number) {
-        this.display = new ROT.Display({
+        this.display = registerDisplay({
             width: width,
             height: height,
             fontSize: 14,
         })
-        const displayContainer = this.display.getContainer()
-        if (!displayContainer) {
-            throw new Error('Display container not found')
-        }
-        const mapElement = document.getElementById('map')
-        if (!mapElement) {
-            throw new Error('Map element not found')
-        }
-        mapElement.appendChild(displayContainer)
 
-        this.level = {
-            number: 1,
+        this.levels.push({
             map: generate(width, height),
-        }
+        })
 
         this.settings = {
             fovRadius: 6,
@@ -67,6 +59,28 @@ class Game {
 
         console.debug('Game initialized')
     }
+
+    public getLevel(): Level {
+        return this.levels[this.currentLevel]
+    }
+
+    public getMap(): GameMap<Tile> {
+        return this.getLevel().map
+    }
 }
 
 export { Game, GameMap }
+
+function registerDisplay(settings: Partial<DisplayOptions>): ROT.Display {
+    const display = new ROT.Display(settings)
+    const displayContainer = display.getContainer()
+    if (!displayContainer) {
+        throw new Error('Display container not found')
+    }
+    const mapElement = document.getElementById('map')
+    if (!mapElement) {
+        throw new Error('Map element not found')
+    }
+    mapElement.appendChild(displayContainer)
+    return display
+}

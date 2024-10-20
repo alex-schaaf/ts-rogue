@@ -23,10 +23,10 @@ function initSystems(game: Game) {
     const inputSystem = new InputSystem(game.playerEntity)
     game.ecs.addSystem(inputSystem)
 
-    const aiSystem = new AiSystem(game.playerEntity, game.level.map)
+    const aiSystem = new AiSystem(game)
     game.ecs.addSystem(aiSystem)
 
-    const collisionSystem = new CollisionSystem(game.level.map)
+    const collisionSystem = new CollisionSystem(game)
     game.ecs.addSystem(collisionSystem)
 
     const inventorySystem = new InventorySystem()
@@ -67,10 +67,10 @@ function main() {
     // game.ecs.addComponent(rat, new Name("Rat"))
 
     const sword = game.ecs.addEntity()
-    game.ecs.addComponent(sword, new Position(28, 20))
+    game.ecs.addComponent(sword, new Position(5, 4))
     game.ecs.addComponent(sword, new Renderable('\\', '#FFFFFF', '#000'))
     game.ecs.addComponent(sword, new IsPocketable())
-    game.ecs.addComponent(sword, new Name("Greatsword +1"))
+    game.ecs.addComponent(sword, new Name("Short Sword"))
 
     initSystems(game)
 

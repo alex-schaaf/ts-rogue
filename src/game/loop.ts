@@ -3,7 +3,7 @@ import { Game } from './game'
 
 function loop(game: Game) {
     game.display.clear()
-    renderMap(game.display, game.level.map)
+    renderMap(game.display, game.getMap())
     game.ecs.update()
 
     requestAnimationFrame(() => loop(game))

@@ -2,20 +2,17 @@ import { AiControlled } from '@components/AiControlled'
 import { Position } from '@components/Position'
 import { MoveIntent } from '@events/movement'
 import { PlayerTookTurn } from '@events/turn'
-import { Tile } from '@game/tile'
+import { Game } from '@game/game'
 import { Entity, System } from '@lib/ecs'
-import { GameMap } from '@lib/gameMap'
 import * as ROT from 'rot-js'
 
 class AiSystem extends System {
     componentsRequired = new Set<Function>([AiControlled])
-    private playerEntity: Entity
-    public gameMap: GameMap<Tile>
+    private game: Game
 
-    constructor(playerEntity: Entity, gameMap: GameMap<Tile>) {
+    constructor(game: Game) {
         super()
-        this.playerEntity = playerEntity
-        this.gameMap = gameMap
+        this.game = game
     }
 
     public update(entities: Set<Entity>): void {}
@@ -26,7 +23,7 @@ class AiSystem extends System {
 
     private handlePlayerTookTurn(event: PlayerTookTurn): void {
         const isPassableCallback = (x: number, y: number): boolean => {
-            return this.gameMap.get(x, y).isWalkable
+            return this.game.getMap().get(x, y)?.isWalkable || false
         }
 
         this.ecs.getEntitiesForSystem(this).forEach((entity) => {
@@ -40,7 +37,7 @@ class AiSystem extends System {
                 return
             }
 
-            const playerComponents = this.ecs.getComponents(this.playerEntity)
+            const playerComponents = this.ecs.getComponents(this.game.playerEntity)
             const playerPosition = playerComponents.get(Position)
 
             const astar = new ROT.Path.AStar(
