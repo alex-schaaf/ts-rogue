@@ -8,7 +8,6 @@ import { IsPocketable } from '@components/IsPocketable'
 import { AddToInventory } from '@events/inventory'
 import { Inventory } from '@components/Inventory'
 import { Game } from '@game/game'
-import { IsPlayer } from '@components/IsPlayer'
 import { Tile } from '@game/tile'
 import { ToNextLevel, ToPreviousLevel } from '@events/level'
 
@@ -72,10 +71,7 @@ class CollisionSystem extends System {
         if (mapCollision === MapCollisionType.Blocked) {
             return
         } else if (mapCollision === MapCollisionType.StairsUp) {
-            this.eventBus.emit(
-                
-                new ToPreviousLevel(event.entityId)
-            )
+            this.eventBus.emit(new ToPreviousLevel(event.entityId))
             return
         } else if (mapCollision === MapCollisionType.StairsDown) {
             this.eventBus.emit(new ToNextLevel(event.entityId))
@@ -85,19 +81,13 @@ class CollisionSystem extends System {
         const { type, entity } = this.handleEntityCollision(md)
 
         if (type === EntityCollisionType.BlockedByEnemy) {
-            this.eventBus.emit(
-                
-                new PhysicalAttack(event.entityId, entity!)
-            )
+            this.eventBus.emit(new PhysicalAttack(event.entityId, entity!))
             return
         } else if (
             type === EntityCollisionType.Pocketable &&
             movingComponents.has(Inventory)
         ) {
-            this.eventBus.emit(
-                
-                new AddToInventory(event.entityId, entity!)
-            )
+            this.eventBus.emit(new AddToInventory(event.entityId, entity!))
         }
 
         this.eventBus.emit(new Moved(event.entityId, targetX, targetY))
