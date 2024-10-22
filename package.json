@@ -2,12 +2,14 @@
   "name": "ts-rogue",
   "version": "0.1.0",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js",
     "test": "jest",
     "format": "prettier --write src/**/*.ts"
   },
+  "workspaces": ["packages"],
   "dependencies": {
     "pino": "^9.5.0",
     "rot-js": "^2.2.0"
