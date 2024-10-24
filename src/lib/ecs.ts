@@ -35,6 +35,9 @@ abstract class System {
 
 type ComponentClass<T extends Component> = new (...args: any[]) => T
 
+/**
+ * ComponentContainer holds all components for an entity.
+ */
 class ComponentContainer {
     private map = new Map<Function, Component>()
 
@@ -92,15 +95,24 @@ class ECS {
     public getEntities(): Map<Entity, ComponentContainer> {
         return this.entities
     }
-
+    
+    /**
+     * Get all entities that are tracked by a specific system.
+     */
     public getEntitiesForSystem(system: System): Set<Entity> {
         return this.systems.get(system) || new Set()
     }
-
+    
+    /**
+     * Get all entities with a specific component.
+     */
     public getEntitiesWithComponent(componentClass: Function): Set<Entity> {
         return this.entitiesWithComponent.get(componentClass.name) || new Set()
     }
-
+    
+    /**
+     * Get all entities with a specific set of components.
+     */
     public getEntitiesWithComponents(
         componentClasses: Array<Function>
     ): Set<Entity> {
@@ -123,10 +135,17 @@ class ECS {
         return entities
     }
 
+    /**
+     * Schedule an entity for destruction. It will be removed from the ECS 
+     * during the next update call.
+     */
     public removeEntity(entity: Entity): void {
         this.entitiesToDestroy.push(entity)
     }
 
+    /**
+     * Check if an entity is scheduled for destruction
+     */
     public isEntityDead(entity: Entity): boolean {
         return this.entitiesToDestroy.includes(entity)
     }
@@ -147,10 +166,16 @@ class ECS {
         this.checkE(entity)
     }
 
+    /**
+     * Get all components for an entity.
+     */
     public getComponents(entity: Entity): ComponentContainer {
         return this.entities.get(entity)!
     }
-
+    
+    /**
+     * Remove a specific component from an entity.
+     */
     public removeComponent(entity: Entity, componentClass: Function): void {
         this.entities.get(entity)?.delete(componentClass)
         this.entitiesWithComponent.get(componentClass.name)?.delete(entity)
@@ -158,6 +183,10 @@ class ECS {
     }
 
     // API: Systems
+    
+    /**
+     * Add a system to the ECS.
+     */
     public addSystem(system: System): void {
         // Systems should not have an empty set of Components, otherwise they'd
         // run on every entity in the ECS.
