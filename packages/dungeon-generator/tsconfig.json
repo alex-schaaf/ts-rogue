@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {},
-        "lib": ["DOM", "ES2023"],
-        "downlevelIteration": true,
-        "esModuleInterop": true,
+        "declaration": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "module": "esnext",
+        "target": "esnext",
         "strict": true,
-        "outDir": "dist"
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
     },
-    "include": ["src/**/*.ts", "src/**/*.test.ts"]
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
 }

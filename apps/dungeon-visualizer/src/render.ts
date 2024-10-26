@@ -1,26 +1,49 @@
-import * as ROT from 'rot-js'
-import TileType from './tileType'
+import TileType from "./TileType";
 
-function renderDungeon(display: ROT.Display, dungeon: number[][]): void {
-    for (let y = 0; y < dungeon.length; y++) {
-        for (let x = 0; x < dungeon[y].length; x++) {
-            const value = dungeon[y][x]
-            switch (value) {
-                case TileType.Wall:
-                    display.draw(x, y, ' ', '#000', '#000')
-                    break
-                case TileType.Floor:
-                    display.draw(x, y, ' ', '#fff', '#fff')
-                    break
-                case TileType.Door:
-                    display.draw(x, y, '+', '#000', '#fff')
-                    break
-                case TileType.Corridor:
-                    display.draw(x, y, '.', '#000', '#fff')
-                    break
-            }
-        }
-    }
+interface RendererOptions {
+  tilesX: number;
+  tilesY: number;
 }
 
-export { renderDungeon }
+export class Renderer {
+  public tileWidth: number;
+  public tileHeight: number;
+
+  constructor(
+    public ctx: CanvasRenderingContext2D,
+    public options: RendererOptions
+  ) {
+    this.ctx = ctx;
+    this.options = options;
+
+    // scale size of tiles to fit canvas
+    this.tileWidth = Math.floor(this.ctx.canvas.width / this.options.tilesX);
+    this.tileHeight = Math.floor(this.ctx.canvas.height / this.options.tilesY);
+  }
+
+  public draw(x: number, y: number, tile: TileType) {
+    switch (tile) {
+      case TileType.Wall:
+        this.drawRect(x, y, "#000");
+        break;
+      case TileType.Floor:
+        this.drawRect(x, y, "#fff");
+        break;
+      case TileType.Door:
+        this.drawRect(x, y, "#00f");
+        break;
+      case TileType.Corridor:
+        this.drawRect(x, y, "#f00");
+        break;
+    }
+  }
+
+  private drawRect(x: number, y: number, color: string) {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
+  }
+
+  public clear() {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+  }
+}

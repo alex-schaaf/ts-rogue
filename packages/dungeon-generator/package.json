@@ -1,16 +1,21 @@
 {
     "name": "@ts-rogue/dungeon-generator",
+    "type": "module",
     "version": "0.1.0",
-    "main": "index.js",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "types": "./src/index.ts",
+        "require": "./src/index.js"
+      }
+    },
     "license": "MIT",
     "scripts": {
-      "build": "esbuild src/index.ts --bundle --outfile=dist/index.js",
+      "build": "tsc",
       "test": "jest",
       "format": "prettier --write src/**/*.ts"
     },
     "dependencies": {
-      "pino": "^9.5.0",
-      "rot-js": "^2.2.0"
     },
     "devDependencies": {
       "typescript": "^5.6.3",

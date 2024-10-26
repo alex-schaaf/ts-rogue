@@ -1,7 +1,8 @@
 {
-  "name": "@ts-rogue/dungeon-visualizer",
+  "name": "ts-rogue",
   "version": "0.1.0",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js",
@@ -10,8 +11,7 @@
   },
   "dependencies": {
     "pino": "^9.5.0",
-    "rot-js": "^2.2.0",
-    "@ts-rogue/dungeon-generator": "*"
+    "rot-js": "^2.2.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.13",
@@ -19,6 +19,8 @@
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
+    "turbo": "^2.2.3",
     "typescript": "^5.6.3"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
