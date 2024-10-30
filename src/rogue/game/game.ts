@@ -10,7 +10,6 @@ import { Renderable } from '@components/Renderable'
 import { Faction, FactionName } from '@components/Faction'
 import { Name } from '@components/Name'
 import { Inventory } from '@components/Inventory'
-import { generate } from 'src/generation/algorithms/simpleLevel'
 import { DisplayOptions } from 'rot-js/lib/display/types'
 
 interface Level {
@@ -22,6 +21,37 @@ interface Level {
 
 interface GameSettings {
     fovRadius: number
+}
+
+function generate(width: number, height: number): GameMap<Tile> {
+    const gameMap = new GameMap<Tile>()
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const tile = Math.random() > 0.8 ? 0 : 1
+            if (tile === 0) {
+                gameMap.set(x, y, {
+                    char: '#',
+                    colorFg: '#657b83',
+                    colorBg: '#002b36',
+                    isWalkable: false,
+                    isTransparent: false,
+                    isExplored: false,
+                })
+            } else {
+                gameMap.set(x, y, {
+                    char: '.',
+                    colorFg: '#073642',
+                    colorBg: '#002b36',
+                    isWalkable: true,
+                    isTransparent: true,
+                    isExplored: false,
+                })
+            }
+        }
+    }
+
+    return gameMap
 }
 
 class Game {

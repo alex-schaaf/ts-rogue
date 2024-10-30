@@ -46,7 +46,7 @@ class AiSystem extends System {
                 isPassableCallback.bind(this)
             )
 
-            const path = []
+            const path: {x: number, y: number }[] = []
             astar.compute(position.x, position.y, (x, y) => {
                 path.push({ x, y })
             })

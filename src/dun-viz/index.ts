@@ -1,6 +1,5 @@
+import { DungeonGenerator1 } from "@dun-gen/index";
 import { Renderer } from "./render";
-import { DungeonGenerator1 } from "@ts-rogue/dungeon-generator";
-import TileType from "./TileType";
 
 interface Options {
   tilesX: number;

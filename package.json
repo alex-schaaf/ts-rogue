@@ -1,17 +1,27 @@
 {
   "name": "ts-rogue",
+  "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "type": "module",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint"
+    "build": "esbuild src/**/*.ts --platform=browser --bundle --outdir=dist",
+    "watch": "esbuild src/**/*.ts --platform=browser --bundle --outdir=dist --watch",
+    "test": "jest",
+    "format": "prettier --write src/**/*.ts"
   },
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "dependencies": {
+    "pino": "^9.5.0",
+    "rot-js": "^2.2.0"
+  },
   "devDependencies": {
-    "turbo": "latest"
+    "@types/jest": "^29.5.13",
+    "esbuild": "^0.24.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
+    "turbo": "^2.2.3",
+    "typescript": "^5.6.3"
   },
   "packageManager": "yarn@1.22.22"
 }

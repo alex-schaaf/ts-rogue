@@ -2,7 +2,7 @@ import { Game } from '@game/game'
 import { InputSystem } from '@systems/InputSystem'
 import { EntityRenderSystem } from '@systems/EntityRenderSystem'
 import { MovementSystem } from '@systems/MovementSystem'
-import { CollisionSystem } from '@systems/CollisionSystem'
+import { CollisionSystem } from '@rogue/ecs/systems/CollisionSystem'
 import { Renderable } from './ecs/components/Renderable'
 import { Position } from '@components/Position'
 import { loop } from '@game/loop'
@@ -26,7 +26,7 @@ function initSystems(game: Game) {
     const aiSystem = new AiSystem(game)
     game.ecs.addSystem(aiSystem)
 
-    const collisionSystem = new CollisionSystem(game)
+    const collisionSystem = new CollisionSystem(game.getMap())
     game.ecs.addSystem(collisionSystem)
 
     const inventorySystem = new InventorySystem()

@@ -7,7 +7,7 @@ import { Faction } from '@components/Faction'
 import { IsPocketable } from '@components/IsPocketable'
 import { AddToInventory } from '@events/inventory'
 import { Inventory } from '@components/Inventory'
-import { Game } from '@game/game'
+import { Game, GameMap } from '@game/game'
 import { Tile } from '@game/tile'
 import { ToNextLevel, ToPreviousLevel } from '@events/level'
 
@@ -40,11 +40,11 @@ enum MapCollisionType {
  */
 class CollisionSystem extends System {
     componentsRequired = new Set<Function>([Position, BlockMovement])
-    game: Game
+    gameMap: GameMap<Tile>
 
-    constructor(game: Game) {
+    constructor(gameMap: GameMap<Tile>) {
         super()
-        this.game = game
+        this.gameMap = gameMap
     }
 
     public update(): void {}
@@ -117,7 +117,7 @@ class CollisionSystem extends System {
     }
 
     private handleMapCollision(md: MoveDestination): MapCollisionType {
-        const tile = this.game.getMap().get(md.x, md.y)
+        const tile = this.gameMap.get(md.x, md.y)
         if (tile === undefined) {
             return MapCollisionType.Blocked
         }

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".", // This is required to use the "paths" option
+        "paths": {
+            "@rogue/*": ["src/rogue/*"],
+            "@dun-gen/*": ["src/dun-gen/*"],
+            "@dun-viz/*": ["src/dun-viz/*"],
+            "@lib/*": ["src/rogue/lib/*"],
+            "@game/*": ["src/rogue/game/*"],
+            "@components/*": ["src/rogue/ecs/components/*"],
+            "@systems/*": ["src/rogue/ecs/systems/*"],
+            "@events/*": ["src/rogue/ecs/events/*"]
+        },
+        "lib": ["DOM", "ES2023"],
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "strict": true,
+        "outDir": "dist"
+    },
+    "include": ["src/**/*.ts"]
+}
