@@ -29,7 +29,7 @@ class NoiseRandomDungeonGenerator {
                     grid[y].push(TileType.Wall)
                 } else {
                     grid[y].push(
-                        Math.random() > 0.5 ? TileType.Floor : TileType.Wall
+                        Math.random() > 0.2 ? TileType.Floor : TileType.Wall
                     )
                 }
             }
