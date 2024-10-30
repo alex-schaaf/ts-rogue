@@ -52,8 +52,8 @@ function initSystems(game: Game) {
 }
 
 function main() {
-    const mapWidth = 11
-    const mapHeight = 7
+    const mapWidth = 36
+    const mapHeight = 18
 
     const game = new Game(mapWidth, mapHeight)
 

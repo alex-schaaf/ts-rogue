@@ -6,7 +6,7 @@
 body {
     color: #fff;
     font-size: 14px;
-    background: hsl(226, 23%, 11%);
+    background: black;
 }
 
 progress[value] {

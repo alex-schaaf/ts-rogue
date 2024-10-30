@@ -32,8 +32,8 @@ function generate(width: number, height: number): GameMap<Tile> {
             if (tile === 0) {
                 gameMap.set(x, y, {
                     char: '#',
-                    colorFg: '#657b83',
-                    colorBg: '#002b36',
+                    colorFg: '#666',
+                    colorBg: '#000',
                     isWalkable: false,
                     isTransparent: false,
                     isExplored: false,
@@ -41,8 +41,8 @@ function generate(width: number, height: number): GameMap<Tile> {
             } else {
                 gameMap.set(x, y, {
                     char: '.',
-                    colorFg: '#073642',
-                    colorBg: '#002b36',
+                    colorFg: '#222',
+                    colorBg: '#000',
                     isWalkable: true,
                     isTransparent: true,
                     isExplored: false,
@@ -73,7 +73,7 @@ class Game {
         this.display = registerDisplay({
             width: width,
             height: height,
-            fontSize: 14,
+            fontSize: 26,
         })
 
         this.levels.push({
