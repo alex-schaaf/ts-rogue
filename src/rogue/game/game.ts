@@ -13,6 +13,8 @@ import { Inventory } from '@components/Inventory'
 import { DisplayOptions } from 'rot-js/lib/display/types'
 import { Camera } from './camera'
 import { GameSettings } from './gameSettings'
+import { Grid, TileType } from '@dun-gen/index'
+import { NoiseRandomDungeonGenerator } from '@dun-gen/generators/noiseDungeonGenerator'
 
 interface Level {
     // The map of the level
@@ -21,35 +23,77 @@ interface Level {
     storedEntities: ComponentContainer[]
 }
 
-function generate(width: number, height: number): GameMap<Tile> {
+function convertGridToMap(grid: Grid): GameMap<Tile> {
     const gameMap = new GameMap<Tile>()
+
+    const height = grid.length
+    const width = grid[0].length
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
-            const tile = Math.random() > 0.8 ? 0 : 1
-            if (tile === 0) {
-                gameMap.set(x, y, {
-                    char: '#',
-                    colorFg: '#666',
-                    colorBg: '#000',
-                    isWalkable: false,
-                    isTransparent: false,
-                    isExplored: false,
-                })
-            } else {
-                gameMap.set(x, y, {
-                    char: '.',
-                    colorFg: '#222',
-                    colorBg: '#000',
-                    isWalkable: true,
-                    isTransparent: true,
-                    isExplored: false,
-                })
+            const tile = grid[y][x]
+            switch (tile) {
+                case TileType.Wall:
+                    gameMap.set(x, y, {
+                        char: '#',
+                        colorFg: '#666',
+                        colorBg: '#000',
+                        isWalkable: false,
+                        isTransparent: false,
+                        isExplored: false,
+                    })
+                    break
+                case TileType.Floor:
+                    gameMap.set(x, y, {
+                        char: '.',
+                        colorFg: '#222',
+                        colorBg: '#000',
+                        isWalkable: true,
+                        isTransparent: true,
+                        isExplored: false,
+                    })
+                    break
+                case TileType.Door:
+                    gameMap.set(x, y, {
+                        char: '+',
+                        colorFg: '#666',
+                        colorBg: '#000',
+                        isWalkable: false,
+                        isTransparent: false,
+                        isExplored: false,
+                    })
+                    break
+                case TileType.Corridor:
+                    gameMap.set(x, y, {
+                        char: '.',
+                        colorFg: '#222',
+                        colorBg: '#000',
+                        isWalkable: true,
+                        isTransparent: true,
+                        isExplored: false,
+                    })
+                    break
+                default:
+                    break
             }
         }
     }
 
     return gameMap
+}
+
+function generate(width: number, height: number): GameMap<Tile> {
+    const dunGen = new NoiseRandomDungeonGenerator(width, height)
+
+    // get the final value of the generator as the dungeon generators currently
+    // yield the grid during the generation process for visualization
+    const generator = dunGen.generate()
+    let grid = generator.next().value
+    while (!generator.next().done) {
+        grid = generator.next().value
+    }
+
+    return convertGridToMap(grid)
 }
 
 class Game {
