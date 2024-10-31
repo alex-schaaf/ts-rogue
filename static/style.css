@@ -6,6 +6,7 @@
 body {
     color: #fff;
     font-size: 14px;
+    font-family: monospace;
     background: black;
 }
 
@@ -37,4 +38,13 @@ progress[value] {
 
 .text-danger {
     color: var(--color-danger-light);
+}
+
+#log {
+    border: 1px solid #5e5e5e;
+    padding: 0.3rem;
+    overflow-y: auto;
+    max-height: 5em;
+    min-height: 5em;
+    line-height: 1em;
 }

@@ -52,8 +52,9 @@ class UiSystem extends System {
         logLine.classList.add('log-line')
         logLine.classList.add('text-danger')
         logLine.textContent = message
-        this.logContainer.appendChild(logLine)
+        this.addLogEntry(logLine)
     }
+
 
     private handleHealthUpdate(event: UIHealthUpdate): void {
         if (event.entityId !== this.playerEntity) {
@@ -79,6 +80,11 @@ class UiSystem extends System {
         itemElement.textContent = itemName
         itemElement.id = `item-${event.itemId}`
         this.inventoryContainer.appendChild(itemElement)
+    }
+
+    private addLogEntry(div: HTMLDivElement): void {
+        this.logContainer.prepend(div)
+        this.logContainer.scrollTop = this.logContainer.scrollHeight
     }
 }
 

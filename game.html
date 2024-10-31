@@ -8,7 +8,7 @@
     </head>
     <body>
         <div style="display: flex; gap: 1rem;">
-            <div>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
                 <div>Level 1</div>
                 <div id="map"></div>
                 <div id="healthDisplay">
@@ -17,11 +17,12 @@
                     <span id="healthCurrent">10</span> /
                     <span id="healthMax">10</span>
                 </div>
+                <div>
+                    <div>Log</div>
+                    <div id="log"></div>
+                </div>
             </div>
-            <div>
-                <div>Log</div>
-                <div id="log"></div>
-            </div>
+
             <div>
                 <div>Inventory</div>
                 <div id="inventory"></div>
