@@ -100,19 +100,6 @@ class DungeonGenerator1 implements AbstractDungeonGenerator {
         }
     }
 
-    private isValidRoom(room: Room): boolean {
-        // a room is valid when its it is within the bounds of the dungeon
-        // and does not have height or width of <= 1
-        return (
-            room.x >= 0 &&
-            room.y >= 0 &&
-            room.x + room.width < this.width &&
-            room.y + room.height < this.height &&
-            room.width > 3 &&
-            room.height > 3
-        )
-    }
-
     public *generate(): Generator<Grid, Grid, void> {
         const nRooms = 30
         const dungeonRadius = 25
@@ -141,6 +128,18 @@ class DungeonGenerator1 implements AbstractDungeonGenerator {
         this.paintRooms()
 
         return this.grid
+    }
+    private isValidRoom(room: Room): boolean {
+        // a room is valid when its it is within the bounds of the dungeon
+        // and does not have height or width of <= 1
+        return (
+            room.x >= 0 &&
+            room.y >= 0 &&
+            room.x + room.width < this.width &&
+            room.y + room.height < this.height &&
+            room.width > 3 &&
+            room.height > 3
+        )
     }
 
     paintRoom(room: Room): void {
