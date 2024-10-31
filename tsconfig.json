@@ -9,7 +9,8 @@
             "@game/*": ["src/rogue/game/*"],
             "@components/*": ["src/rogue/ecs/components/*"],
             "@systems/*": ["src/rogue/ecs/systems/*"],
-            "@events/*": ["src/rogue/ecs/events/*"]
+            "@events/*": ["src/rogue/ecs/events/*"],
+            "@utils/*": ["src/utils/*"]
         },
         "lib": ["DOM", "ES2023"],
         "downlevelIteration": true,
