@@ -12,16 +12,13 @@ import { Name } from '@components/Name'
 import { Inventory } from '@components/Inventory'
 import { DisplayOptions } from 'rot-js/lib/display/types'
 import { Camera } from './camera'
+import { GameSettings } from './gameSettings'
 
 interface Level {
     // The map of the level
     map: GameMap<Tile>
     // Entities belonging to this level that are not currently active in the ECS
     storedEntities: ComponentContainer[]
-}
-
-interface GameSettings {
-    fovRadius: number
 }
 
 function generate(width: number, height: number): GameMap<Tile> {
@@ -57,7 +54,6 @@ function generate(width: number, height: number): GameMap<Tile> {
 
 class Game {
     display: ROT.Display
-    settings: GameSettings
 
     levels: Level[] = []
     currentLevel: number = 0
@@ -68,7 +64,7 @@ class Game {
     private displayHeight: number
     public camera: Camera
 
-    constructor(width: number, height: number) {
+    constructor(public settings: GameSettings) {
         this.displayWidth = 18
         this.displayHeight = 9
 
@@ -79,21 +75,17 @@ class Game {
         })
 
         this.levels.push({
-            map: generate(width, height),
+            map: generate(this.settings.mapWidth, this.settings.mapHeight),
             storedEntities: [],
         })
-
-        this.settings = {
-            fovRadius: 6,
-        }
 
         const player = this.ecs.addEntity()
         this.playerEntity = player
         this.ecs.addComponent(player, new IsPlayer())
 
         const playerPosition = new Position(
-            Math.floor(width / 2),
-            Math.floor(height / 2)
+            Math.floor(this.settings.mapWidth / 2),
+            Math.floor(this.settings.mapHeight / 2)
         )
 
         // create a camera centered on the current player position
@@ -138,7 +130,7 @@ class Game {
      */
     public nextLevel(): void {
         this.levels.push({
-            map: generate(this.displayWidth, this.displayHeight),
+            map: generate(this.settings.mapWidth, this.settings.mapHeight),
             storedEntities: [],
         })
         this.storeEntitiesOf(this.currentLevel)
