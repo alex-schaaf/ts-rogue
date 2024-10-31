@@ -1,10 +1,12 @@
 import * as ROT from 'rot-js'
 import { GameMap } from '@game/game'
 import { Tile } from '@game/tile'
+import { Camera } from '@rogue/game/camera'
 
 export function renderMap(
     display: ROT.Display,
-    map: GameMap<Tile>
+    map: GameMap<Tile>,
+    camera: Camera
     // fovMap: Record<string, boolean>
 ) {
     function isVisible(x: number, y: number) {
@@ -17,19 +19,20 @@ export function renderMap(
         // return map.get(x, y)?.isExplored === true
     }
 
-    for (const [x, y] of map.getCoords()) {
-        let tile = map.get(x, y)!
-        if (isVisible(x, y)) {
-            display.draw(x, y, tile.char, tile.colorFg, tile.colorBg)
-        } else if (isExplored(x, y)) {
-            display.draw(
-                x,
-                y,
-                tile.char,
-                darkenColor(tile.colorFg, 50),
-                darkenColor(tile.colorBg, 50)
-            )
+    const bounds = camera.getBounds()
+
+    for (const [x, y] of camera.getVisibleCoords()) {
+        let tile = map.get(x, y)
+        if (!tile) {
+            continue
         }
+        display.draw(
+            x - bounds.x0,
+            y - bounds.y0,
+            tile.char,
+            tile.colorFg,
+            tile.colorBg
+        )
     }
 }
 
