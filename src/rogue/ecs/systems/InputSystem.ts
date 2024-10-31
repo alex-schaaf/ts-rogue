@@ -42,6 +42,8 @@ class InputSystem extends System {
             case this.keybindings.MOVE_RIGHT:
                 this.eventBus.emit(new MoveIntent(this.player, 1, 0))
                 break
+            default:
+                return
         }
         this.eventBus.emit(new PlayerTookTurn(this.player))
     }
