@@ -13,7 +13,7 @@ import { Inventory } from '@components/Inventory'
 import { DisplayOptions } from 'rot-js/lib/display/types'
 import { Camera } from './camera'
 import { GameSettings } from './gameSettings'
-import { Grid, TileType } from '@dun-gen/index'
+import { DungeonGenerator1, Grid, TileType } from '@dun-gen/index'
 import { NoiseRandomDungeonGenerator } from '@dun-gen/generators/noiseDungeonGenerator'
 
 interface Level {
@@ -83,7 +83,8 @@ function convertGridToMap(grid: Grid): GameMap<Tile> {
 }
 
 function generate(width: number, height: number): GameMap<Tile> {
-    const dunGen = new NoiseRandomDungeonGenerator(width, height)
+    // const dunGen = new NoiseRandomDungeonGenerator(width, height)
+    const dunGen = new DungeonGenerator1(width, height)
 
     // get the final value of the generator as the dungeon generators currently
     // yield the grid during the generation process for visualization

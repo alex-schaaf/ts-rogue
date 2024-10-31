@@ -1,5 +1,6 @@
 // https://github.com/a327ex/blog/issues/7
 
+import Queue from '@utils/Queue'
 import { AbstractDungeonGenerator } from '../abstract'
 import { TileType } from '../tiles'
 
@@ -8,6 +9,7 @@ type Grid = number[][]
 class Room {
     private vx: number
     private vy: number
+    public connectedTo: Set<Room> = new Set()
 
     constructor(
         public x: number,
@@ -59,6 +61,16 @@ class Room {
         }
     }
 
+    /**
+     * Calculate the euclidean distance from the center of one room to the
+     * center of another.
+     */
+    public distanceTo(other: Room): number {
+        const { x: x0, y: y0 } = this.getCenter()
+        const { x: x1, y: y1 } = other.getCenter()
+        return Math.sqrt(Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2))
+    }
+
     public collidesWith(other: Room): boolean {
         return (
             this.x < other.x + other.width + 1 &&
@@ -101,7 +113,7 @@ class DungeonGenerator1 implements AbstractDungeonGenerator {
     }
 
     public *generate(): Generator<Grid, Grid, void> {
-        const nRooms = 30
+        const nRooms = 10
         const dungeonRadius = 25
 
         while (this.rooms.length < nRooms) {
@@ -115,7 +127,7 @@ class DungeonGenerator1 implements AbstractDungeonGenerator {
         this.clear()
         this.paintRooms()
 
-        for (let i = 0; i < 200; i++) {
+        for (let i = 0; i < 10; i++) {
             this.repulseRooms()
             this.clear()
             this.paintRooms()
@@ -127,8 +139,55 @@ class DungeonGenerator1 implements AbstractDungeonGenerator {
         this.clear()
         this.paintRooms()
 
+        let rooms = this.rooms.map((room) => room)
+        let currentRoom = rooms.pop()!
+
+        while (rooms.length > 0) {
+            let closestRoom = getClosestRoom(currentRoom, rooms)
+            rooms = rooms.filter((r) => r !== closestRoom)
+            this.connectRooms(currentRoom, closestRoom)
+            currentRoom = closestRoom
+            yield this.grid
+        }
+
+        function getClosestRoom(from: Room, rooms: Room[]): Room {
+            let closestRoom = rooms[0]
+            rooms.forEach((room) => {
+                let distance = from.distanceTo(room)
+                if (distance < from.distanceTo(closestRoom)) {
+                    closestRoom = room
+                }
+            })
+            return closestRoom
+        }
+
         return this.grid
     }
+
+    /**
+     * Connect two rooms with an L-shaped corridor on the grid and mark them as connected
+     */
+    private connectRooms = (roomA: Room, roomB: Room) => {
+        const center1 = roomA.getCenter()
+        const center2 = roomB.getCenter()
+
+        let x = center1.x
+        let y = center1.y
+
+        while (x !== center2.x) {
+            this.grid[y][x] = TileType.Corridor
+            x += x < center2.x ? 1 : -1
+        }
+
+        while (y !== center2.y) {
+            this.grid[y][x] = TileType.Corridor
+            y += y < center2.y ? 1 : -1
+        }
+
+        roomA.connectedTo.add(roomB)
+        roomB.connectedTo.add(roomA)
+    }
+
     private isValidRoom(room: Room): boolean {
         // a room is valid when its it is within the bounds of the dungeon
         // and does not have height or width of <= 1
