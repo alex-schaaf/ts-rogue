@@ -11,6 +11,7 @@ import { Faction, FactionName } from '@components/Faction'
 import { Name } from '@components/Name'
 import { Inventory } from '@components/Inventory'
 import { DisplayOptions } from 'rot-js/lib/display/types'
+import { Camera } from './camera'
 
 interface Level {
     // The map of the level
@@ -65,14 +66,15 @@ class Game {
     public playerEntity: number
     private displayWidth: number
     private displayHeight: number
+    public camera: Camera
 
     constructor(width: number, height: number) {
-        this.displayWidth = width
-        this.displayHeight = height
+        this.displayWidth = 18
+        this.displayHeight = 9
 
         this.display = registerDisplay({
-            width: width,
-            height: height,
+            width: this.displayWidth,
+            height: this.displayHeight,
             fontSize: 26,
         })
 
@@ -88,10 +90,21 @@ class Game {
         const player = this.ecs.addEntity()
         this.playerEntity = player
         this.ecs.addComponent(player, new IsPlayer())
-        this.ecs.addComponent(
-            player,
-            new Position(Math.floor(width / 2), Math.floor(height / 2))
+
+        const playerPosition = new Position(
+            Math.floor(width / 2),
+            Math.floor(height / 2)
         )
+
+        // create a camera centered on the current player position
+        this.camera = new Camera(
+            this.displayWidth,
+            this.displayHeight,
+            playerPosition.x,
+            playerPosition.y
+        )
+
+        this.ecs.addComponent(player, playerPosition)
         this.ecs.addComponent(player, new Renderable('@', '#de935f', '#000'))
         this.ecs.addComponent(player, new BlockMovement())
         this.ecs.addComponent(player, new Health(10, 10))

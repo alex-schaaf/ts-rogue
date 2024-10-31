@@ -45,10 +45,10 @@ function initSystems(game: Game) {
     const healthSystem = new HealthSystem()
     game.ecs.addSystem(healthSystem)
 
-    const movementSystem = new MovementSystem()
+    const movementSystem = new MovementSystem(game.camera)
     game.ecs.addSystem(movementSystem)
 
-    const renderSystem = new EntityRenderSystem(game.display)
+    const renderSystem = new EntityRenderSystem(game.display, game.camera)
     game.ecs.addSystem(renderSystem)
 
     const uiSystem = new UiSystem(game.playerEntity)
@@ -59,8 +59,8 @@ function initSystems(game: Game) {
 }
 
 function main() {
-    const mapWidth = 36
-    const mapHeight = 18
+    const mapWidth = 36 * 3
+    const mapHeight = 18 * 3
 
     const game = new Game(mapWidth, mapHeight)
 
