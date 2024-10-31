@@ -65,8 +65,8 @@ class Game {
     public camera: Camera
 
     constructor(public settings: GameSettings) {
-        this.displayWidth = 18
-        this.displayHeight = 9
+        this.displayWidth = settings.cameraWidth
+        this.displayHeight = settings.cameraHeight
 
         this.display = registerDisplay({
             width: this.displayWidth,
