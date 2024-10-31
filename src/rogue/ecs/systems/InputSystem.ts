@@ -4,17 +4,24 @@ import { Entity, System } from '@lib/ecs'
 import { MoveIntent } from '../events/movement'
 import { PlayerTookTurn } from '@events/turn'
 
+interface KeyBindings {
+    MOVE_LEFT: string
+    MOVE_RIGHT: string
+    MOVE_UP: string
+    MOVE_DOWN: string
+}
+
 class InputSystem extends System {
     componentsRequired = new Set<Function>([IsPlayer])
-    private player: Entity
 
-    constructor(player: Entity) {
+    constructor(
+        private player: Entity,
+        private keybindings: KeyBindings
+    ) {
         super()
         this.player = player
 
-        window.addEventListener('keydown', (event) =>
-            this.handleInput(event)
-        )
+        window.addEventListener('keydown', (event) => this.handleInput(event))
     }
 
     public update(entities: Set<Entity>): void {}
@@ -23,29 +30,21 @@ class InputSystem extends System {
 
     public handleInput(event: KeyboardEvent): void {
         switch (event.key) {
-            case 'ArrowUp':
-                this.eventBus.emit(
-                    new MoveIntent(this.player, 0, -1)
-                )
+            case this.keybindings.MOVE_UP:
+                this.eventBus.emit(new MoveIntent(this.player, 0, -1))
                 break
-            case 'ArrowDown':
-                this.eventBus.emit(
-                    new MoveIntent(this.player, 0, 1)
-                )
+            case this.keybindings.MOVE_DOWN:
+                this.eventBus.emit(new MoveIntent(this.player, 0, 1))
                 break
-            case 'ArrowLeft':
-                this.eventBus.emit(
-                    new MoveIntent(this.player, -1, 0)
-                )
+            case this.keybindings.MOVE_LEFT:
+                this.eventBus.emit(new MoveIntent(this.player, -1, 0))
                 break
-            case 'ArrowRight':
-                this.eventBus.emit(
-                    new MoveIntent(this.player, 1, 0)
-                )
+            case this.keybindings.MOVE_RIGHT:
+                this.eventBus.emit(new MoveIntent(this.player, 1, 0))
                 break
         }
         this.eventBus.emit(new PlayerTookTurn(this.player))
     }
 }
 
-export { InputSystem }
+export { KeyBindings, InputSystem }

@@ -1,5 +1,5 @@
 import { Game } from '@game/game'
-import { InputSystem } from '@systems/InputSystem'
+import { InputSystem, KeyBindings } from '@systems/InputSystem'
 import { EntityRenderSystem } from '@systems/EntityRenderSystem'
 import { MovementSystem } from '@systems/MovementSystem'
 import { CollisionSystem } from '@rogue/ecs/systems/CollisionSystem'
@@ -20,7 +20,14 @@ import { Faction, FactionName } from '@components/Faction'
 import { GameLevelSystem } from '@systems/GameLevelSystem'
 
 function initSystems(game: Game) {
-    const inputSystem = new InputSystem(game.playerEntity)
+    const keybindings: KeyBindings = {
+        MOVE_LEFT: 'a',
+        MOVE_RIGHT: 'd',
+        MOVE_UP: 'w',
+        MOVE_DOWN: 's'
+    }
+    
+    const inputSystem = new InputSystem(game.playerEntity, keybindings)
     game.ecs.addSystem(inputSystem)
 
     const aiSystem = new AiSystem(game)
