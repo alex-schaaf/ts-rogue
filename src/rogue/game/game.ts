@@ -23,6 +23,30 @@ interface Level {
     storedEntities: ComponentContainer[]
 }
 
+function isUnreachable(grid: Grid, x: number, y: number): boolean {
+    const directions = [
+        { dx: -1, dy: 0 }, // left
+        { dx: 1, dy: 0 }, // right
+        { dx: 0, dy: -1 }, // up
+        { dx: 0, dy: 1 }, // down
+    ]
+
+    for (const { dx, dy } of directions) {
+        const nx = x + dx
+        const ny = y + dy
+
+        if (nx < 0 || ny < 0 || nx >= grid[0].length || ny >= grid.length) {
+            continue // out of bounds, count as wall
+        }
+
+        if (grid[ny][nx] !== TileType.Wall) {
+            return false
+        }
+    }
+
+    return true
+}
+
 function convertGridToMap(grid: Grid): GameMap<Tile> {
     const gameMap = new GameMap<Tile>()
 
@@ -31,6 +55,9 @@ function convertGridToMap(grid: Grid): GameMap<Tile> {
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
+            if (isUnreachable(grid, x, y)) {
+                continue
+            }
             const tile = grid[y][x]
             switch (tile) {
                 case TileType.Wall:
