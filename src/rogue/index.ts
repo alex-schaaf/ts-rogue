@@ -18,15 +18,16 @@ import { Health } from '@components/Health'
 import { AiControlled } from '@components/AiControlled'
 import { Faction, FactionName } from '@components/Faction'
 import { GameLevelSystem } from '@systems/GameLevelSystem'
+import { GameSettings } from './game/gameSettings'
 
 function initSystems(game: Game) {
     const keybindings: KeyBindings = {
         MOVE_LEFT: 'a',
         MOVE_RIGHT: 'd',
         MOVE_UP: 'w',
-        MOVE_DOWN: 's'
+        MOVE_DOWN: 's',
     }
-    
+
     const inputSystem = new InputSystem(game.playerEntity, keybindings)
     game.ecs.addSystem(inputSystem)
 
@@ -59,25 +60,35 @@ function initSystems(game: Game) {
 }
 
 function main() {
-    const mapWidth = 36 * 3
-    const mapHeight = 18 * 3
+    const gameSettings: GameSettings = {
+        mapWidth: 80,
+        mapHeight: 40,
+        cameraWidth: 36,
+        cameraHeight: 18,
+    }
 
-    const game = new Game(mapWidth, mapHeight)
+    const game = new Game(gameSettings)
 
     const rat = game.ecs.addEntity()
-    game.ecs.addComponent(rat, new Position(Math.floor(mapWidth / 2) + 1, Math.floor(mapHeight / 2) ))
+    game.ecs.addComponent(
+        rat,
+        new Position(
+            Math.floor(gameSettings.mapWidth / 2) + 1,
+            Math.floor(gameSettings.mapHeight / 2)
+        )
+    )
     game.ecs.addComponent(rat, new Renderable('r', '#CE422B', '#000'))
     game.ecs.addComponent(rat, new BlockMovement())
     game.ecs.addComponent(rat, new Health(2, 2))
     game.ecs.addComponent(rat, new Faction(FactionName.Enemy))
     game.ecs.addComponent(rat, new AiControlled())
-    game.ecs.addComponent(rat, new Name("Rat"))
+    game.ecs.addComponent(rat, new Name('Rat'))
 
     const sword = game.ecs.addEntity()
     game.ecs.addComponent(sword, new Position(5, 4))
     game.ecs.addComponent(sword, new Renderable('\\', '#FFFFFF', '#000'))
     game.ecs.addComponent(sword, new IsPocketable())
-    game.ecs.addComponent(sword, new Name("Short Sword"))
+    game.ecs.addComponent(sword, new Name('Short Sword'))
 
     initSystems(game)
 
